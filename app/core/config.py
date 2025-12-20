@@ -41,6 +41,7 @@ class Config:
             self.CDATA_API_BASE = self._get_required_env("CDATA_API_BASE")
             self.CDATA_USERNAME = self._get_required_env("CDATA_USERNAME")
             self.CDATA_PASSWORD = self._get_required_env("CDATA_PASSWORD")
+            self.UPLOAD_DIRECTORY = self._get_required_env("UPLOAD_DIRECTORY")
 
             # Create auth tuple for requests
             self.CDATA_AUTH = (self.CDATA_USERNAME, self.CDATA_PASSWORD)
@@ -48,6 +49,7 @@ class Config:
             logger.info(f"Configuration loaded successfully!")
             logger.info(f"CDATA API Base: {self.CDATA_API_BASE}")
             logger.info(f"CDATA Username: {self.CDATA_USERNAME}")
+            logger.info(f"Upload Directory: {self.UPLOAD_DIRECTORY}")
         except ConfigurationError:
             """
             This means:

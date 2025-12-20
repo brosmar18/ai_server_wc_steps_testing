@@ -10,9 +10,10 @@ This module contains:
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.logging_config import setup_logging, get_logger
 from app.core.config import config
-from app.api.routers import objects
+from app.api.routers import objects, upload
 
 # Setup logging
 setup_logging()
@@ -44,8 +45,21 @@ app = FastAPI(
 
 logger.info("FastAPI application initialized")
 
+# CORS Middleware to allow access from frontend app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Frontend URLs
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+
+logger.info("CORS middleware configured")
+
+
 # Include routers
 app.include_router(objects.router)
+app.include_router(upload.router)
 
 logger.info("API routers registered")
 

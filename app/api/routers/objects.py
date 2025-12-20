@@ -4,6 +4,7 @@ This router provides the endpoint to fetch fields from CDATA objects
 from fastapi import APIRouter, HTTPException
 from typing import List, Dict, Any
 from app.clients.cdata.object_operations import fetch_object_data, CDataAPIError
+from app.clients.cdata.formatters import format_fields
 from app.core.logging_config import get_logger
 
 logger = get_logger(__name__)
@@ -45,13 +46,18 @@ async def get_object_fields(object_name: str) -> Dict[str, Any]:
                 detail="object_name cannot be empty"
             )
         
-        fields = fetch_object_data(object_name)
+        # Fetch raw fields from CDATA
+        raw_fields = fetch_object_data(object_name)
 
-        logger.info(f"Successfully retrieved {len(fields)} fields for '{object_name}'")
+        formatted_fields = format_fields(raw_fields)
+        
+
+
+        logger.info(f"Successfully retrieved and formatted {len(formatted_fields)} fields for '{object_name}'")
         return {
             "object_name": object_name,
-            "field_count": len(fields),
-            "fields": fields
+            "field_count": len(formatted_fields),
+            "fields": formatted_fields
         }
     
     except ValueError as e:

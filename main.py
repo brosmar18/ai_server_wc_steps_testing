@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from app.core.logging_config import setup_logging, get_logger
+from app.core.config import config
 
 setup_logging()
 logger = get_logger(__name__)
@@ -33,5 +34,6 @@ async def root():
     logger.info("Health check endpoint called!")
     return {
         "status": "OK",
-        "message": "AI Server is Running!"
+        "message": "AI Server is Running!",
+        "api_configured": bool(config.CDATA_API_BASE)
     }

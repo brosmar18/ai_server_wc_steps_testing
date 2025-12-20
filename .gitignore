@@ -1,0 +1,123 @@
+# ============================================================
+#  Python / FastAPI Project Gitignore (Production Ready)
+# ============================================================
+
+# -----------------------------
+#  Virtual environments
+# -----------------------------
+venv/
+ENV/
+env/
+.venv/
+.venv_org/
+
+# -----------------------------
+#  Python bytecode / caching
+# -----------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyd
+*$py.class
+
+# -----------------------------
+#  Python packaging
+# -----------------------------
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+wheels/
+
+# -----------------------------
+#  Environment variables / secrets
+# -----------------------------
+.env
+.env.*
+!.env.example
+
+# -----------------------------
+#  Logs & temp files
+# -----------------------------
+*.log
+*.out
+*.err
+*.tmp
+*.temp
+*.pid
+*.pid.lock
+
+# Uvicorn / Gunicorn logs
+gunicorn.error.log
+gunicorn.access.log
+
+# -----------------------------
+#  VS Code
+# -----------------------------
+.vscode/
+.settings/
+
+# -----------------------------
+#  OS-generated files
+# -----------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# -----------------------------
+#  Test / coverage / tooling
+# -----------------------------
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache/
+pytest_cache/
+.pytest_cache/
+.mypy_cache/
+.mypy_cache/*
+.pytype/
+.hypothesis/
+
+# -----------------------------
+#  FastAPI static artifacts
+# -----------------------------
+staticfiles/
+media/
+uploads/
+
+# -----------------------------
+#  Node / frontend (if generated locally)
+# -----------------------------
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+package-lock.json
+
+# -----------------------------
+#  Editor / IDE junk
+# -----------------------------
+.idea/
+*.iml
+
+# -----------------------------
+#  Project-specific
+# -----------------------------
+# Local debugging scripts/artifacts
+scripts/__pycache__/
+scripts/*.log
+scripts/*.tmp
+
+# Ignore local experiment outputs
+data/
+outputs/
+experiments/
+
+# -------------------------------------------------------------
+# End of .gitignore
+# -------------------------------------------------------------

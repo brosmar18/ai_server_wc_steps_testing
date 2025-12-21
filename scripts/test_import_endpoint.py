@@ -1,5 +1,5 @@
 """
-Test script to verify the upload-and-process endpoint works with reference mappings.
+Test script to verify the upload-and-process endpoint works with import params.
 """
 
 import sys
@@ -29,9 +29,9 @@ def create_test_csv_with_references() -> BytesIO:
 
 
 def test_upload_and_process_endpoint():
-    """Test the upload-and-process endpoint with reference fields"""
+    """Test the upload-and-process endpoint with import params"""
     print("\n" + "="*60)
-    print("Testing Upload and Process Endpoint (with References)")
+    print("Testing Upload and Process Endpoint (Full Import Config)")
     print("="*60 + "\n")
     
     try:
@@ -53,7 +53,7 @@ def test_upload_and_process_endpoint():
             f"{API_BASE}/ai_import/upload-and-process",
             files=files,
             data=data,
-            timeout=120.0  # Longer timeout for reference processing
+            timeout=120.0
         )
         
         response.raise_for_status()
@@ -72,12 +72,6 @@ def test_upload_and_process_endpoint():
         print(f"Total Mappings: {data_response['mapping_count']}")
         
         print("\n" + "-"*60)
-        print("Columns Detected:")
-        print("-"*60)
-        for col in data_response['columns']:
-            print(f"  - {col}")
-        
-        print("\n" + "-"*60)
         print("AI Mappings:")
         print("-"*60)
         for column, mapping in data_response['mappings'].items():
@@ -86,22 +80,38 @@ def test_upload_and_process_endpoint():
             else:
                 print(f"{column} → {mapping['fieldName']} ({mapping['fieldType']})")
         
-        # Display reference object info
-        if data_response.get('ref_obj_fields'):
+        # Display import params (with safety check)
+        import_params = data_response.get('import_params')
+        if import_params and import_params.get('params'):  
+            params = import_params['params']
+            
             print("\n" + "-"*60)
-            print("Reference Objects Processed:")
+            print("Import Configuration:")
             print("-"*60)
-            for ref_obj, fields in data_response['ref_obj_fields'].items():
-                print(f"{ref_obj}: {len(fields)} fields")
-        
-        if data_response.get('ref_obj_ai_mappings'):
+            print(f"Name: {params.get('importName', 'N/A')}")
+            print(f"Description: {params.get('importDescription', 'N/A')}")
+            
+            if params.get('fieldOverrides'):
+                print(f"\nField Overrides ({len(params['fieldOverrides'])} fields):")
+                for override in params['fieldOverrides']:
+                    col_num = override['col']
+                    field_name = override['fieldName']
+                    
+                    if override.get('lookupRefObject'):
+                        print(f"  Col {col_num}: {field_name} → {override['lookupRefObject']}.{override['lookupFieldName']}")
+                    else:
+                        print(f"  Col {col_num}: {field_name}")
+            
+            # Print full JSON
             print("\n" + "-"*60)
-            print("Reference Object AI Mappings:")
+            print("Full Import Params JSON:")
             print("-"*60)
-            for column, ref_mapping in data_response['ref_obj_ai_mappings'].items():
-                print(f"{column}:")
-                print(f"  Parent Field: {ref_mapping['parent_field_name']}")
-                print(f"  Lookup Field: {ref_mapping['ref_object_name']}.{ref_mapping['field_name']}")
+            print(json.dumps(import_params, indent=2))
+        else:
+            print("\n" + "-"*60)
+            print("⚠ Import params not found in response")
+            print("-"*60)
+            print("Response keys:", list(data_response.keys()))
         
         print("\n" + "="*60)
         print("✓ Upload and process endpoint test completed successfully")
@@ -123,7 +133,7 @@ def test_upload_and_process_endpoint():
 
 if __name__ == "__main__":
     print("\n" + "="*60)
-    print("Upload and Process Endpoint Test (Phase 10)")
+    print("Upload and Process Endpoint Test (Phase 11)")
     print("="*60)
     print("\nMake sure the server is running: python main.py")
     print("="*60)

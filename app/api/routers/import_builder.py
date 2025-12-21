@@ -14,7 +14,8 @@ from app.schemas.import_params import ImportParamsResponse
 from app.clients.cdata.object_operations import fetch_object_data, CDataAPIError
 from app.clients.cdata.formatters import format_fields
 from app.services.mapping.parent_mapper import run_parent_mapping
-from app.services.mapping.reference_mapper import process_all_reference_mappings  # NEW
+from app.services.mapping.reference_mapper import process_all_reference_mappings
+from app.services.import_config.params_builder import build_import_params  # NEW
 from app.core.config import config
 from app.core.logging_config import get_logger
 
@@ -27,9 +28,7 @@ router = APIRouter(
 
 
 def parse_csv_columns(file_path: Path) -> list[str]:
-    """
-    Parse CSV file to extract column names from the header row.
-    """
+    """Parse CSV file to extract column names from the header row."""
     try:
         with open(file_path, 'r', encoding='utf-8-sig') as f:
             reader = csv.reader(f)
@@ -64,8 +63,9 @@ async def upload_and_process(
     3. Fetches object field definitions from CDATA
     4. Formats the fields into a clean structure
     5. Uses AI to map CSV columns to fields
-    6. Processes reference field mappings (NEW in Phase 10)
-    7. Returns the complete mapping information
+    6. Processes reference field mappings
+    7. Builds import configuration (NEW in Phase 11)
+    8. Returns the complete mapping information
     """
     temp_file_path = None
     
@@ -121,7 +121,7 @@ async def upload_and_process(
         )
         logger.info(f"AI generated {len(final_mappings)} final mappings and {len(ref_mappings)} reference mappings")
         
-        # Step 6: Process reference field mappings (NEW!)
+        # Step 6: Process reference field mappings
         ref_obj_fields = {}
         ref_obj_ai_mappings = {}
         
@@ -156,8 +156,19 @@ async def upload_and_process(
                 "lookupFieldName": ref_mapping["field_name"]
             }
         
-        # Step 8: Build response
-        logger.info("Step 8: Building response...")
+        # Step 8: Build import params configuration (NEW!)
+        logger.info("Step 8: Building import params configuration...")
+        import_params = build_import_params(
+            object_name=object_name,
+            file_name=file.filename,
+            columns=columns,
+            mappings=all_mappings_dict,
+            ref_obj_ai_mappings=ref_obj_ai_mappings
+        )
+        logger.info("Import params configuration built successfully")
+        
+        # Step 9: Build response
+        logger.info("Step 9: Building response...")
         response = ImportParamsResponse(
             object_name=object_name,
             file_name=file.filename,
@@ -166,7 +177,7 @@ async def upload_and_process(
             mappings=all_mappings_dict,
             ref_obj_fields=ref_obj_fields,
             ref_obj_ai_mappings=ref_obj_ai_mappings,
-            import_params={"params": {}},  
+            import_params=import_params,  # Now populated!
             field_count=len(formatted_fields),
             mapping_count=len(all_mappings_dict)
         )
@@ -174,6 +185,7 @@ async def upload_and_process(
         logger.info(f"Successfully processed import for {object_name}")
         logger.info(f"Total mappings: {response.mapping_count}")
         logger.info(f"Reference objects: {list(ref_obj_fields.keys())}")
+        logger.info(f"Import params: {import_params['params']['importName']}")
         
         return response
         

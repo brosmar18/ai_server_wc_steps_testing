@@ -119,6 +119,11 @@ class ImportParamsResponse(BaseModel):
         description="Complete import configuration for CDATA"
     )
     
+    import_result: Optional[Dict[str, Any]] = Field(
+        None,
+        description="Result from CDATA import definition creation"
+    )
+    
     field_count: int = Field(
         ...,
         description="Total number of fields in the object",
@@ -162,6 +167,12 @@ class ImportParamsResponse(BaseModel):
                         "importDescription": "AI-generated import",
                         "importInstructions": "Review and import"
                     }
+                },
+                "import_result": {
+                    "success": True,
+                    "status_code": 200,
+                    "url": "http://localhost:8080/rest/web/import/saveImport/...",
+                    "data": {}
                 },
                 "field_count": 45,
                 "mapping_count": 3

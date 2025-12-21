@@ -13,9 +13,10 @@ import csv
 from app.schemas.import_params import ImportParamsResponse
 from app.clients.cdata.object_operations import fetch_object_data, CDataAPIError
 from app.clients.cdata.formatters import format_fields
+from app.clients.cdata.import_operations import save_import_to_atlas, ImportCreationError
 from app.services.mapping.parent_mapper import run_parent_mapping
 from app.services.mapping.reference_mapper import process_all_reference_mappings
-from app.services.import_config.params_builder import build_import_params  # NEW
+from app.services.import_config.params_builder import build_import_params
 from app.core.config import config
 from app.core.logging_config import get_logger
 
@@ -28,7 +29,18 @@ router = APIRouter(
 
 
 def parse_csv_columns(file_path: Path) -> list[str]:
-    """Parse CSV file to extract column names from the header row."""
+    """
+    Parse CSV file to extract column names from the header row.
+    
+    Args:
+        file_path: Path to the CSV file
+        
+    Returns:
+        List of column names
+        
+    Raises:
+        ValueError: If CSV cannot be parsed or has no columns
+    """
     try:
         with open(file_path, 'r', encoding='utf-8-sig') as f:
             reader = csv.reader(f)
@@ -62,15 +74,39 @@ async def upload_and_process(
     2. Parses columns from the CSV header
     3. Fetches object field definitions from CDATA
     4. Formats the fields into a clean structure
-    5. Uses AI to map CSV columns to fields
-    6. Processes reference field mappings
-    7. Builds import configuration (NEW in Phase 11)
-    8. Returns the complete mapping information
+    5. Uses AI to map CSV columns to parent object fields
+    6. Processes reference field mappings (parallel approach)
+    7. Builds import configuration
+    8. Creates import definition in CDATA
+    9. Returns the complete mapping information
+    
+    Args:
+        file: The CSV file to upload
+        object_name: The CDATA object name to map to
+        
+    Returns:
+        ImportParamsResponse with all mapping information and import result
+        
+    Raises:
+        HTTPException 400: Invalid request data
+        HTTPException 502: CDATA API error
+        HTTPException 500: Internal server error
+        
+    Example:
+        POST /ai_import/upload-and-process
+        Content-Type: multipart/form-data
+        
+        file: employees.csv
+        object_name: employee
+        
+        Returns complete mapping response with import creation result
     """
     temp_file_path = None
     
     try:
-        logger.info(f"Upload and process request for object: {object_name}")
+        logger.info(f"=" * 80)
+        logger.info(f"UPLOAD AND PROCESS REQUEST: {object_name}")
+        logger.info(f"=" * 80)
         
         # Validate inputs
         if not object_name or not object_name.strip():
@@ -85,7 +121,9 @@ async def upload_and_process(
         object_name = object_name.strip()
         logger.info(f"File: {file.filename}")
         
+        # ================================================================
         # Step 1: Save the CSV file
+        # ================================================================
         logger.info("Step 1: Saving CSV file...")
         upload_dir = Path(config.UPLOAD_DIRECTORY)
         upload_dir.mkdir(parents=True, exist_ok=True)
@@ -96,44 +134,57 @@ async def upload_and_process(
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
         
-        logger.info(f"File saved: {file_path}")
+        logger.info(f"✓ File saved: {file_path}")
         
+        # ================================================================
         # Step 2: Parse columns from CSV
+        # ================================================================
         logger.info("Step 2: Parsing CSV columns...")
         columns = parse_csv_columns(file_path)
-        logger.info(f"Parsed columns: {columns}")
+        logger.info(f"✓ Parsed {len(columns)} columns: {columns}")
         
+        # ================================================================
         # Step 3: Fetch object fields from CDATA
-        logger.info("Step 3: Fetching object fields from CDATA...")
+        # ================================================================
+        logger.info(f"Step 3: Fetching fields for object '{object_name}' from CDATA...")
         raw_fields = fetch_object_data(object_name)
-        logger.info(f"Fetched {len(raw_fields)} raw fields")
+        logger.info(f"✓ Fetched {len(raw_fields)} raw fields")
         
+        # ================================================================
         # Step 4: Format the fields
+        # ================================================================
         logger.info("Step 4: Formatting fields...")
         formatted_fields = format_fields(raw_fields)
-        logger.info(f"Formatted {len(formatted_fields)} fields")
+        logger.info(f"✓ Formatted {len(formatted_fields)} fields")
         
+        # ================================================================
         # Step 5: Run AI mapping for parent object
+        # ================================================================
         logger.info("Step 5: Running AI mapping agent for parent object...")
         final_mappings, ref_mappings = await run_parent_mapping(
             columns=columns,
             fields=formatted_fields
         )
-        logger.info(f"AI generated {len(final_mappings)} final mappings and {len(ref_mappings)} reference mappings")
+        logger.info(f"✓ AI generated {len(final_mappings)} final mappings and {len(ref_mappings)} reference mappings")
         
-        # Step 6: Process reference field mappings
+        # ================================================================
+        # Step 6: Process reference field mappings (PARALLEL)
+        # ================================================================
         ref_obj_fields = {}
         ref_obj_ai_mappings = {}
         
         if ref_mappings:
-            logger.info("Step 6: Processing reference object mappings...")
+            logger.info(f"Step 6: Processing {len(ref_mappings)} reference object mappings (PARALLEL MODE)...")
             ref_obj_fields, ref_obj_ai_mappings = await process_all_reference_mappings(ref_mappings)
-            logger.info(f"Processed {len(ref_obj_ai_mappings)} reference object mappings")
+            logger.info(f"✓ Processed {len(ref_obj_ai_mappings)} reference object mappings")
+            logger.info(f"✓ Reference objects: {list(ref_obj_fields.keys())}")
         else:
             logger.info("Step 6: No reference mappings to process")
         
+        # ================================================================
         # Step 7: Build final mappings dictionary
-        logger.info("Step 7: Building final mappings...")
+        # ================================================================
+        logger.info("Step 7: Building final mappings dictionary...")
         
         # Combine final and reference mappings
         all_mappings_dict = {}
@@ -156,7 +207,11 @@ async def upload_and_process(
                 "lookupFieldName": ref_mapping["field_name"]
             }
         
-        # Step 8: Build import params configuration (NEW!)
+        logger.info(f"✓ Built {len(all_mappings_dict)} total mappings")
+        
+        # ================================================================
+        # Step 8: Build import params configuration
+        # ================================================================
         logger.info("Step 8: Building import params configuration...")
         import_params = build_import_params(
             object_name=object_name,
@@ -165,10 +220,49 @@ async def upload_and_process(
             mappings=all_mappings_dict,
             ref_obj_ai_mappings=ref_obj_ai_mappings
         )
-        logger.info("Import params configuration built successfully")
+        logger.info(f"✓ Import params built: {import_params['params']['importName']}")
         
-        # Step 9: Build response
-        logger.info("Step 9: Building response...")
+        # ================================================================
+        # Step 9: Create import definition in CDATA
+        # ================================================================
+        logger.info("Step 9: Creating import definition in CDATA...")
+        import_result = None
+        
+        try:
+            import_result = await save_import_to_atlas(
+                import_params=import_params,
+                object_name=object_name,
+                filename=file.filename
+            )
+            logger.info("✓ Import definition created successfully in CDATA")
+            logger.info(f"  Status: {import_result['status_code']}")
+            logger.info(f"  URL: {import_result['url']}")
+            
+        except ImportCreationError as e:
+            logger.error(f"✗ Failed to create import in CDATA: {e}")
+            import_result = {
+                "success": False,
+                "error": str(e),
+                "status_code": None,
+                "url": None,
+                "data": None
+            }
+            # Continue anyway - we'll return the error in the response
+            
+        except Exception as e:
+            logger.error(f"✗ Unexpected error creating import in CDATA: {e}")
+            import_result = {
+                "success": False,
+                "error": f"Unexpected error: {str(e)}",
+                "status_code": None,
+                "url": None,
+                "data": None
+            }
+        
+        # ================================================================
+        # Step 10: Build response
+        # ================================================================
+        logger.info("Step 10: Building final response...")
         response = ImportParamsResponse(
             object_name=object_name,
             file_name=file.filename,
@@ -177,19 +271,25 @@ async def upload_and_process(
             mappings=all_mappings_dict,
             ref_obj_fields=ref_obj_fields,
             ref_obj_ai_mappings=ref_obj_ai_mappings,
-            import_params=import_params,  # Now populated!
+            import_params=import_params,
+            import_result=import_result,
             field_count=len(formatted_fields),
             mapping_count=len(all_mappings_dict)
         )
         
-        logger.info(f"Successfully processed import for {object_name}")
-        logger.info(f"Total mappings: {response.mapping_count}")
-        logger.info(f"Reference objects: {list(ref_obj_fields.keys())}")
-        logger.info(f"Import params: {import_params['params']['importName']}")
+        logger.info("=" * 80)
+        logger.info("✓ SUCCESSFULLY PROCESSED IMPORT")
+        logger.info(f"  Object: {object_name}")
+        logger.info(f"  File: {file.filename}")
+        logger.info(f"  Total Mappings: {response.mapping_count}")
+        logger.info(f"  Reference Objects: {list(ref_obj_fields.keys())}")
+        logger.info(f"  Import Created: {import_result.get('success', False) if import_result else False}")
+        logger.info("=" * 80)
         
         return response
         
     except HTTPException:
+        # Re-raise HTTP exceptions
         raise
         
     except ValueError as e:

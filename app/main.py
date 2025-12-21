@@ -13,7 +13,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.logging_config import setup_logging, get_logger
 from app.core.config import config
-from app.api.routers import objects, upload
+from app.api.routers import objects, upload, import_builder
+
 
 # Setup logging
 setup_logging()
@@ -60,6 +61,7 @@ logger.info("CORS middleware configured")
 # Include routers
 app.include_router(objects.router)
 app.include_router(upload.router)
+app.include_router(import_builder.router)
 
 logger.info("API routers registered")
 

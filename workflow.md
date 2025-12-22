@@ -142,7 +142,7 @@ flowchart TB
     style Final fill:#7BB837
 ```
 
-#### **Step 6a: Fetch Reference Schemas**
+#### **Step 4a: Fetch Reference Schemas**
 
 ```mermaid
 sequenceDiagram
@@ -160,7 +160,7 @@ sequenceDiagram
     Note over Backend: ref_schemas = {<br/>  "emptitle": [...],<br/>  "shift": [...]<br/>}
 ```
 
-#### **Step 6b: Build Parallel Prompts**
+#### **Step 4b: Build Parallel Prompts**
 
 For **each** reference field:
 1. Create individual prompt with column + ref object fields
@@ -170,7 +170,7 @@ For **each** reference field:
 - Prompt 1: Map "Primary Job Title" → jobtitle fields
 - Prompt 2: Map "Department" → department fields
 
-#### **Step 6c: Execute in Parallel** 
+#### **Step 4c: Execute in Parallel** 
 
 ```python
 # 🚀 THE MAGIC: All AI calls run simultaneously
@@ -182,7 +182,7 @@ results = await asyncio.gather(
 ```
 
 
-#### **Step 6d: Combine Results**
+#### **Step 4d: Combine Results**
 
 ```python
 # Zip metadata with AI results
@@ -281,7 +281,7 @@ flowchart LR
     ],
     "importName": "Asset AI Atlas",
     "importDescription": "Asset info from AI",
-    "importInstructions": "Load data from equip_ai.csv. equipno is the key. Creates job titles if missing."
+    "importInstructions": "Load data from equip_ai.csv."
   }
 }
 ```

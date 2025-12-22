@@ -40,16 +40,11 @@ def format_fields(raw_fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
                 "label": "Emp No",
                 "fieldType": "string",
                 "options": {
-                    "title": "Employee Number"
-                }
-            },
-            {
-                "fieldName": "emptitle",
-                "label": "Job Title",
-                "fieldType": "reference",
-                "options": {
-                    "title": "Select job title",
-                    "refObjects": [{"name": "jobtitle"}]
+                    "title": "Employee Number",
+                    "altVarName": "",
+                    "fieldOrVar": "field",
+                    "length": 26,
+                    "required": true,
                 }
             }
         ]
@@ -61,13 +56,6 @@ def format_fields(raw_fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
                 "field_label": "Emp No",
                 "field_type": "string",
                 "whats_this": "Employee Number"
-            },
-            {
-                "field_name": "emptitle",
-                "field_label": "Job Title",
-                "field_type": "reference",
-                "whats_this": "Select job title",
-                "ref_object_name": "jobtitle"
             }
         ]
     """

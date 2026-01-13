@@ -1,0 +1,22 @@
+{
+  "step": "Step 2: CSV Column Parsing",
+  "step_number": 2,
+  "success": true,
+  "timestamp": "2026-01-13T13:48:38.582497",
+  "data": {
+    "object_name": "emplolyee",
+    "file_name": "sample_employees.csv",
+    "file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc _steps_testing\\uploads\\sample_employees.csv",
+    "columns": [
+      "Employee Number",
+      "First Name",
+      "Last Name",
+      "DOB",
+      "Hire Date",
+      "Email",
+      "Primary Job Title",
+      "Shift"
+    ]
+  },
+  "errors": []
+}

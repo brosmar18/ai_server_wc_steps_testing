@@ -1,0 +1,13 @@
+{
+  "step": "Step 1: File Upload and Validation",
+  "step_number": 1,
+  "success": true,
+  "timestamp": "2026-01-13T13:15:36.049490",
+  "data": {
+    "object_name": "emplolyee",
+    "file_name": "sample_employees.csv",
+    "upload_directory": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc _steps_testing\\uploads",
+    "file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc _steps_testing\\uploads\\sample_employees.csv"
+  },
+  "errors": []
+}

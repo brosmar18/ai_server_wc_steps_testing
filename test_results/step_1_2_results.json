@@ -1,0 +1,45 @@
+{
+  "test_name": "Step 1 & 2: File Upload and CSV Parsing",
+  "timestamp": "2026-01-13T11:09:43.181178",
+  "configuration": {
+    "csv_file": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc\\test_data\\sample_employees.csv",
+    "object_name": "employee",
+    "upload_directory": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc\\uploads"
+  },
+  "steps": [
+    {
+      "step": "Step 1: File Upload & Validation",
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "data": {
+        "object_name": "employee",
+        "original_file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc\\test_data\\sample_employees.csv",
+        "uploaded_file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc\\uploads\\sample_employees.csv",
+        "file_name": "sample_employees.csv",
+        "file_size_bytes": 3366
+      }
+    },
+    {
+      "step": "Step 2: CSV Column Parsing",
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "data": {
+        "columns": [
+          "Employee Number",
+          "First Name",
+          "Last Name",
+          "DOB",
+          "Hire Date",
+          "Email",
+          "Primary Job Title",
+          "Shift"
+        ],
+        "column_count": 8,
+        "file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc\\uploads\\sample_employees.csv"
+      }
+    }
+  ],
+  "overall_success": true
+}

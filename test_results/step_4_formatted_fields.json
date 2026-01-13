@@ -1,8 +1,8 @@
 {
-  "step": "Step 3: Fetch CDATA Object Schema",
-  "step_nummber": 3,
+  "step": "Step 4: Format CDATA Fields",
+  "step_number": 4,
   "success": true,
-  "timestamp": "2026-01-13T14:55:46.171454",
+  "timestamp": "2026-01-13T15:18:16.414298",
   "data": {
     "object_name": "employee",
     "file_name": "sample_employees.csv",
@@ -1247,6 +1247,229 @@
         },
         "relationalOp": "contain",
         "visible": false
+      }
+    ],
+    "formatted_fields": [
+      {
+        "field_name": "ad_user",
+        "label": "AD Username",
+        "field_type": "string"
+      },
+      {
+        "field_name": "address",
+        "label": "Address",
+        "field_type": "string"
+      },
+      {
+        "field_name": "address2",
+        "label": "Address 2",
+        "field_type": "string"
+      },
+      {
+        "field_name": "altphone",
+        "label": "Alt Phone",
+        "field_type": "string"
+      },
+      {
+        "field_name": "badge_no",
+        "label": "Badge No",
+        "field_type": "string"
+      },
+      {
+        "field_name": "city",
+        "label": "City",
+        "field_type": "string"
+      },
+      {
+        "field_name": "comments",
+        "label": "Comments",
+        "field_type": "memo"
+      },
+      {
+        "field_name": "dob",
+        "label": "Date Of Birth",
+        "field_type": "date"
+      },
+      {
+        "field_name": "dominant_hand",
+        "label": "Dominant Hand",
+        "field_type": "staticlist"
+      },
+      {
+        "field_name": "email",
+        "label": "Email",
+        "field_type": "email"
+      },
+      {
+        "field_name": "empno",
+        "label": "Emp No",
+        "field_type": "string"
+      },
+      {
+        "field_name": "shift",
+        "label": "Emp Shift",
+        "field_type": "reference",
+        "ref_object_name": "shift"
+      },
+      {
+        "field_name": "emppict",
+        "label": "Employee Picture",
+        "field_type": "image"
+      },
+      {
+        "field_name": "employee_type",
+        "label": "Employee Type",
+        "field_type": "staticlist"
+      },
+      {
+        "field_name": "inact",
+        "label": "Employee is Inactive",
+        "field_type": "bool"
+      },
+      {
+        "field_name": "ethnicity",
+        "label": "Ethnicity",
+        "field_type": "reference",
+        "ref_object_name": "ethnicity"
+      },
+      {
+        "field_name": "fax",
+        "label": "Fax",
+        "field_type": "string"
+      },
+      {
+        "field_name": "fname",
+        "label": "First Name",
+        "field_type": "string"
+      },
+      {
+        "field_name": "gender",
+        "label": "Gender",
+        "field_type": "reference",
+        "ref_object_name": "gender"
+      },
+      {
+        "field_name": "hat_size",
+        "label": "Hat Size",
+        "field_type": "string"
+      },
+      {
+        "field_name": "hierlvl1",
+        "label": "Hierarchy Level 1",
+        "field_type": "reference",
+        "ref_object_name": "hierlvl1"
+      },
+      {
+        "field_name": "hierlvl2",
+        "label": "Hierarchy Level 2",
+        "field_type": "reference",
+        "ref_object_name": "hierlvl2"
+      },
+      {
+        "field_name": "hierlvl9",
+        "label": "Hierarchy Level 9",
+        "field_type": "reference",
+        "ref_object_name": "hierlvl9"
+      },
+      {
+        "field_name": "hiredate",
+        "label": "Hire Date",
+        "field_type": "date"
+      },
+      {
+        "field_name": "inseam",
+        "label": "Inseam",
+        "field_type": "string"
+      },
+      {
+        "field_name": "language",
+        "label": "Language",
+        "field_type": "staticlist"
+      },
+      {
+        "field_name": "lname",
+        "label": "Last Name",
+        "field_type": "string"
+      },
+      {
+        "field_name": "manager",
+        "label": "Manager",
+        "field_type": "reference",
+        "ref_object_name": "employee"
+      },
+      {
+        "field_name": "mobile",
+        "label": "Mobile",
+        "field_type": "string"
+      },
+      {
+        "field_name": "neck_size",
+        "label": "Neck Size",
+        "field_type": "string"
+      },
+      {
+        "field_name": "phone",
+        "label": "Phone",
+        "field_type": "string"
+      },
+      {
+        "field_name": "postcode",
+        "label": "Postal Code",
+        "field_type": "string"
+      },
+      {
+        "field_name": "emptitle",
+        "label": "Primary Job Title",
+        "field_type": "reference",
+        "ref_object_name": "emptitle"
+      },
+      {
+        "field_name": "emprank",
+        "label": "Rank",
+        "field_type": "reference",
+        "ref_object_name": "emprank"
+      },
+      {
+        "field_name": "relreas",
+        "label": "Release Comments",
+        "field_type": "memo"
+      },
+      {
+        "field_name": "reldate",
+        "label": "Release Date",
+        "field_type": "date"
+      },
+      {
+        "field_name": "relreason",
+        "label": "Release Reason",
+        "field_type": "reference",
+        "ref_object_name": "emprelease"
+      },
+      {
+        "field_name": "sid",
+        "label": "SID",
+        "field_type": "string"
+      },
+      {
+        "field_name": "signature",
+        "label": "Signature",
+        "field_type": "image"
+      },
+      {
+        "field_name": "sleeve_length",
+        "label": "Sleeve Length",
+        "field_type": "string"
+      },
+      {
+        "field_name": "state",
+        "label": "State",
+        "field_type": "reference",
+        "ref_object_name": "state"
+      },
+      {
+        "field_name": "waist",
+        "label": "Waist",
+        "field_type": "string"
       }
     ]
   },

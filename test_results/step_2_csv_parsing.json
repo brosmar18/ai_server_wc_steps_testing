@@ -2,9 +2,9 @@
   "step": "Step 2: CSV Column Parsing",
   "step_number": 2,
   "success": true,
-  "timestamp": "2026-01-13T13:48:38.582497",
+  "timestamp": "2026-01-13T14:32:20.360824",
   "data": {
-    "object_name": "emplolyee",
+    "object_name": "employee",
     "file_name": "sample_employees.csv",
     "file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc _steps_testing\\uploads\\sample_employees.csv",
     "columns": [

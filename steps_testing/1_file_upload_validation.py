@@ -151,7 +151,7 @@ def main() -> int:
     
     project_root = Path(__file__).parent.parent
     csv_file = project_root / "test_data" / "sample_employees.csv"
-    object_name = "emplolyee"
+    object_name = "employee"
     upload_dir = project_root / "uploads"
     output_file = project_root / "test_results" / "step_1_file_upload.json"
 

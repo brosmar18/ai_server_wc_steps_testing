@@ -10,7 +10,6 @@ import json
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-
 # -------------------------------------------------------------------
 # Result Builder
 # -------------------------------------------------------------------
@@ -25,7 +24,6 @@ def build_step_8c_result() -> dict:
         "errors": [],
     }
 
-
 # -------------------------------------------------------------------
 # Load & Validate Step 8b
 # -------------------------------------------------------------------
@@ -38,10 +36,7 @@ def load_step_8b_results(step_8b_file: Path) -> dict:
         raise FileNotFoundError(f"Step 8b results not found: {step_8b_file}")
 
     with open(step_8b_file, "r", encoding="utf-8") as f:
-        data = json.load(f)
-
-    print("Step 8b results loaded successfully.")
-    return data
+        return json.load(f)
 
 
 def validate_step_8b_success(step8b_data: dict, result: dict) -> None:
@@ -55,22 +50,21 @@ def validate_step_8b_success(step8b_data: dict, result: dict) -> None:
 
     print("Step 8b completed successfully.")
 
-
 # -------------------------------------------------------------------
-# Phase 2: Manual Import Params Assembly
+# Core Logic: Import Params Assembly
 # -------------------------------------------------------------------
 
 def build_import_params(field_overrides: list, import_metadata: dict) -> dict:
     """
-    Manually assemble the CDATA import params structure.
+    Assemble the final CDATA import params structure.
 
-    Mirrors:
-        {
-          "params": {
-            "fieldOverrides": [...],
-            **metadata
-          }
-        }
+    Exact CDATA shape:
+    {
+      "params": {
+        "fieldOverrides": [...],
+        <import metadata keys>
+      }
+    }
     """
     print("\nBuilding import params structure...")
 
@@ -87,36 +81,42 @@ def build_import_params(field_overrides: list, import_metadata: dict) -> dict:
 
     return params
 
-
 # -------------------------------------------------------------------
 # Integration
 # -------------------------------------------------------------------
 
 def integrate_step_8c_data(step8b_data: dict, result: dict) -> None:
-    field_overrides = step8b_data["data"]["field_overrides"]
-    import_metadata = step8b_data["data"]["import_metadata"]
+    data = step8b_data["data"]
+
+    columns = data["columns"]
+    field_overrides = data["field_overrides"]
+    import_metadata = data["import_metadata"]
+
+    # HARD INVARIANT — NO EXTRA COLUMNS
+    if len(columns) != len(field_overrides):
+        raise ValueError(
+            f"Final import params mismatch: "
+            f"{len(columns)} columns but {len(field_overrides)} field overrides"
+        )
 
     import_params = build_import_params(
         field_overrides=field_overrides,
         import_metadata=import_metadata,
     )
 
+    # Carry forward ONLY what is still relevant at execution time
     result["data"] = {
-        # Carried forward
-        "object_name": step8b_data["data"]["object_name"],
-        "file_name": step8b_data["data"]["file_name"],
-        "file_path": step8b_data["data"]["file_path"],
-        "columns": step8b_data["data"].get("columns"),
-        "all_mappings_dict": step8b_data["data"].get("all_mappings_dict"),
-        "ref_obj_ai_mappings": step8b_data["data"].get("ref_obj_ai_mappings"),
+        "object_name": data["object_name"],
+        "file_name": data["file_name"],
+        "file_path": data["file_path"],
+        "columns": columns,
         "field_overrides": field_overrides,
+        "field_overrides_count": len(field_overrides),
         "import_metadata": import_metadata,
-        # New
+        # Final execution payload
         "import_params": import_params,
         "params_keys": list(import_params["params"].keys()),
-        "field_overrides_count": len(field_overrides),
     }
-
 
 # -------------------------------------------------------------------
 # Finalization
@@ -136,7 +136,6 @@ def save_result_to_json(result: dict, output_file: Path) -> None:
 
     print(f"Results saved to: {output_file}")
     print(f"File size: {output_file.stat().st_size} bytes")
-
 
 # -------------------------------------------------------------------
 # Main
@@ -168,7 +167,7 @@ def main() -> int:
     finalize_step_8c_success(result)
     save_result_to_json(result, output_file)
 
-    print("\nFinal Step 8c result (Phase 2):")
+    print("\nFinal Step 8c result:")
     print(f"  Success: {result['success']}")
     print(f"  Params keys: {result['data'].get('params_keys')}")
     print(f"  Field overrides: {result['data'].get('field_overrides_count')}")

@@ -1,0 +1,68 @@
+{
+  "step": "Step 6a: Fetch Reference Object Schemas",
+  "step_number": "6a",
+  "success": true,
+  "timestamp": "2026-01-13T18:49:36.092493",
+  "data": {
+    "object_name": "employee",
+    "file_name": "sample_employees.csv",
+    "file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc _steps_testing\\uploads\\sample_employees.csv",
+    "columns": [
+      "Employee Number",
+      "First Name",
+      "Last Name",
+      "DOB",
+      "Hire Date",
+      "Email",
+      "Primary Job Title",
+      "Shift"
+    ],
+    "final_mappings": [
+      {
+        "column": "Employee Number",
+        "fieldName": "empno",
+        "fieldType": "string"
+      },
+      {
+        "column": "First Name",
+        "fieldName": "fname",
+        "fieldType": "string"
+      },
+      {
+        "column": "Last Name",
+        "fieldName": "lname",
+        "fieldType": "string"
+      },
+      {
+        "column": "DOB",
+        "fieldName": "dob",
+        "fieldType": "date"
+      },
+      {
+        "column": "Hire Date",
+        "fieldName": "hiredate",
+        "fieldType": "date"
+      },
+      {
+        "column": "Email",
+        "fieldName": "email",
+        "fieldType": "email"
+      }
+    ],
+    "reference_mappings": [
+      {
+        "column": "Primary Job Title",
+        "parent_field_name": "emptitle",
+        "field_type": "reference",
+        "ref_obj_name": "emptitle"
+      },
+      {
+        "column": "Shift",
+        "parent_field_name": "shift",
+        "field_type": "reference",
+        "ref_obj_name": "shift"
+      }
+    ]
+  },
+  "errors": []
+}

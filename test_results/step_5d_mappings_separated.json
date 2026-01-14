@@ -2,7 +2,7 @@
   "step": "Step 5d: Separate Mappings",
   "step_number": "5d",
   "success": true,
-  "timestamp": "2026-01-13T18:33:01.161066",
+  "timestamp": "2026-01-13T18:46:52.572249",
   "data": {
     "object_name": "employee",
     "file_name": "sample_employees.csv",
@@ -1531,10 +1531,54 @@
       }
     ],
     "total_mappings": 8,
-    "final_mappings": [],
-    "reference_mappings": [],
-    "final_mappings_count": 0,
-    "reference_mappings_count": 0
+    "final_mappings": [
+      {
+        "column": "Employee Number",
+        "fieldName": "empno",
+        "fieldType": "string"
+      },
+      {
+        "column": "First Name",
+        "fieldName": "fname",
+        "fieldType": "string"
+      },
+      {
+        "column": "Last Name",
+        "fieldName": "lname",
+        "fieldType": "string"
+      },
+      {
+        "column": "DOB",
+        "fieldName": "dob",
+        "fieldType": "date"
+      },
+      {
+        "column": "Hire Date",
+        "fieldName": "hiredate",
+        "fieldType": "date"
+      },
+      {
+        "column": "Email",
+        "fieldName": "email",
+        "fieldType": "email"
+      }
+    ],
+    "final_mappings_count": 6,
+    "reference_mappings": [
+      {
+        "column": "Primary Job Title",
+        "parent_field_name": "emptitle",
+        "field_type": "reference",
+        "ref_obj_name": "emptitle"
+      },
+      {
+        "column": "Shift",
+        "parent_field_name": "shift",
+        "field_type": "reference",
+        "ref_obj_name": "shift"
+      }
+    ],
+    "reference_mappings_count": 2
   },
   "errors": []
 }

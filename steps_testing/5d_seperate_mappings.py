@@ -18,9 +18,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # -------------------------------------------------------------------
 
 def build_step_5d_result() -> dict:
-    """
-    Build the base result object for Step 5d.
-    """
     return {
         "step": "Step 5d: Separate Mappings",
         "step_number": "5d",
@@ -62,20 +59,81 @@ def validate_step_5c_success(step5c_data: dict, result: dict) -> None:
 
 
 # -------------------------------------------------------------------
-# Integration (no separation yet)
+# Mapping Builders
+# -------------------------------------------------------------------
+
+def build_final_mappings(ai_mappings: List[Dict]) -> List[Dict]:
+    results: List[Dict] = []
+
+    for mapping in ai_mappings:
+        if mapping.get("fieldType") != "reference":
+            results.append({
+                "column": mapping["column"],
+                "fieldName": mapping["fieldName"],
+                "fieldType": mapping["fieldType"],
+            })
+
+    return results
+
+
+def build_reference_mappings(ai_mappings: List[Dict]) -> List[Dict]:
+    results: List[Dict] = []
+
+    for mapping in ai_mappings:
+        if (
+            mapping.get("fieldType") == "reference"
+            and mapping.get("refObjectName")
+        ):
+            results.append({
+                "column": mapping["column"],
+                "parent_field_name": mapping["fieldName"],
+                "field_type": mapping["fieldType"],
+                "ref_obj_name": mapping["refObjectName"],
+            })
+
+    return results
+
+
+# -------------------------------------------------------------------
+# Validation (NEW — Phase 4)
+# -------------------------------------------------------------------
+
+def validate_step_5d_result(result: dict) -> None:
+    """
+    Enforce correctness rules for Step 5d.
+    """
+    data = result["data"]
+
+    final_count = data.get("final_mappings_count", 0)
+    ref_count = data.get("reference_mappings_count", 0)
+    total = data.get("total_mappings", 0)
+
+    if final_count <= 0:
+        result["errors"].append("No final (non-reference) mappings produced")
+
+    if final_count + ref_count != total:
+        result["errors"].append(
+            f"Mapping count mismatch: final({final_count}) + reference({ref_count}) != total({total})"
+        )
+
+
+# -------------------------------------------------------------------
+# Integration
 # -------------------------------------------------------------------
 
 def integrate_step_5c_data(step5c_data: dict, result: dict) -> None:
-    """
-    Carry forward Step 5c data unchanged.
-    """
     result["data"] = dict(step5c_data["data"])
 
-    # Placeholders for separation (future phases)
-    result["data"]["final_mappings"] = []
-    result["data"]["reference_mappings"] = []
-    result["data"]["final_mappings_count"] = 0
-    result["data"]["reference_mappings_count"] = 0
+    ai_mappings = step5c_data["data"]["ai_mappings"]
+
+    final_mappings = build_final_mappings(ai_mappings)
+    reference_mappings = build_reference_mappings(ai_mappings)
+
+    result["data"]["final_mappings"] = final_mappings
+    result["data"]["final_mappings_count"] = len(final_mappings)
+
+    result["data"]["reference_mappings"] = reference_mappings
+    result["data"]["reference_mappings_count"] = len(reference_mappings)
 
 
 # -------------------------------------------------------------------
@@ -101,7 +159,7 @@ def save_results(result: dict, output_file: Path) -> None:
 def main() -> int:
     print("=" * 80)
     print("TESTING STEP 5d: SEPARATE MAPPINGS")
-    print("PHASE 1: LOAD + VALIDATE STEP 5c")
+    print("PHASE 4: RESULT VALIDATION")
     print("=" * 80)
 
     project_root = Path(__file__).parent.parent
@@ -116,6 +174,7 @@ def main() -> int:
 
         if not result["errors"]:
             integrate_step_5c_data(step5c_data, result)
+            validate_step_5d_result(result)
 
         result["success"] = len(result["errors"]) == 0
         save_results(result, output_file)
@@ -126,9 +185,10 @@ def main() -> int:
         save_results(result, output_file)
         print(f"Unexpected error: {exc}")
 
-    print("\nFinal Step 5d result (Phase 1):")
+    print("\nFinal Step 5d result (Phase 4):")
     print(f"  Success: {result['success']}")
-    print(f"  Total AI Mappings: {result['data'].get('total_mappings')}")
+    print(f"  Final Mappings: {result['data'].get('final_mappings_count')}")
+    print(f"  Reference Mappings: {result['data'].get('reference_mappings_count')}")
     print(f"  Errors: {result['errors']}")
 
     return 0 if result["success"] else 1

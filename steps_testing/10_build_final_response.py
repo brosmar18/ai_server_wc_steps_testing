@@ -43,12 +43,6 @@ from datetime import datetime
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from app.schemas.import_params import ImportParamsResponse
-from app.core.logging_config import get_logger, setup_logging
-import logging
-
-# Setup logging
-setup_logging(level=logging.INFO)
-logger = get_logger(__name__)
 
 
 def main():
@@ -82,7 +76,6 @@ def main():
         # Load Step 9 Results
         # ============================================================
         print("Loading Step 9 results...")
-        logger.info("Loading Step 9 results")
 
         if not step9_results_file.exists():
             raise FileNotFoundError(
@@ -97,13 +90,11 @@ def main():
             raise ValueError("Step 9 did not complete successfully")
 
         print(f"✓ Loaded Step 9 results")
-        logger.info("Step 9 results loaded successfully")
 
         # ============================================================
         # Extract All Required Data from Step 9
         # ============================================================
         print("\nExtracting all data for final response from Step 9...")
-        logger.info("Extracting all data for final response from Step 9")
 
         # All data should be available from Step 9 due to linear pipeline
         data = step9_data['data']
@@ -123,13 +114,11 @@ def main():
         print(f"✓ Columns: {len(columns)}")
         print(f"✓ Fields: {len(formatted_fields)}")
         print(f"✓ Mappings: {len(all_mappings_dict)}")
-        logger.info(f"Extracted all data for {object_name}")
 
         # ============================================================
         # Step 10: Build Final Response
         # ============================================================
         print("\nBuilding final ImportParamsResponse...")
-        logger.info("Building final ImportParamsResponse")
 
         # This matches lines 266-278 in import_builder.py
         response = ImportParamsResponse(
@@ -149,7 +138,6 @@ def main():
         print(f"✓ Built final response")
         print(f"  Field Count: {response.field_count}")
         print(f"  Mapping Count: {response.mapping_count}")
-        logger.info(f"Built final response with {response.mapping_count} mappings")
 
         # Convert Pydantic model to dict for storage
         response_dict = response.model_dump()
@@ -158,7 +146,6 @@ def main():
         # Store Results
         # ============================================================
         print("\nStoring final response...")
-        logger.info("Storing final response")
 
         # Store the complete response
         result["data"] = {
@@ -181,7 +168,6 @@ def main():
             json.dump(result, f, indent=2)
 
         print(f"✓ Results saved to {step10_results_file}")
-        logger.info(f"Results saved to {step10_results_file}")
 
         # ============================================================
         # Display Summary
@@ -234,14 +220,11 @@ def main():
         print("  • CDATA import creation result")
         print("="*80 + "\n")
 
-        logger.info("Step 10 completed successfully")
-
     except FileNotFoundError as e:
         result["success"] = False
         result["timestamp"] = datetime.now().isoformat()
         result["errors"].append(str(e))
         print(f"\n✗ Error: {e}")
-        logger.error(f"File not found: {e}")
 
         # Save error result
         with open(step10_results_file, 'w') as f:
@@ -254,7 +237,6 @@ def main():
         result["timestamp"] = datetime.now().isoformat()
         result["errors"].append(str(e))
         print(f"\n✗ Error in Step 10: {e}")
-        logger.error(f"Step 10 failed: {e}", exc_info=True)
 
         # Save error result
         with open(step10_results_file, 'w') as f:

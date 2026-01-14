@@ -16,10 +16,10 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # Result Builder
 # -------------------------------------------------------------------
 
-def build_step_7_result() -> dict:
+def build_step_8a_result() -> dict:
     return {
-        "step": "Step 7: Build Final Mappings Dictionary",
-        "step_number": "7",
+        "step": "Step 8a: Build Field Overrides",
+        "step_number": "8a",
         "success": False,
         "timestamp": datetime.now().isoformat(),
         "data": {},
@@ -28,7 +28,7 @@ def build_step_7_result() -> dict:
 
 
 # -------------------------------------------------------------------
-# Load & Validate Step 6b
+# Load & Validate Step 7
 # -------------------------------------------------------------------
 
 def load_json(path: Path) -> dict:
@@ -51,38 +51,43 @@ def validate_success(step_data: dict, step_name: str, result: dict) -> None:
 
 
 # -------------------------------------------------------------------
-# Phase 3: Build Unified Mappings
+# Phase 3: Build Field Overrides
 # -------------------------------------------------------------------
 
-def build_final_mappings_dict(
-    final_mappings: list,
-    ref_obj_ai_mappings: dict,
-) -> dict:
+def build_field_overrides(columns: list, mappings: dict) -> list:
     """
-    Combine non-reference and reference mappings into one dictionary.
-    Matches import_builder.py logic exactly.
+    Inline implementation of params_builder.build_field_overrides()
+
+    Rules:
+    - One override per column (by index)
+    - Reference fields ALWAYS include createOnMissing=True
     """
-    all_mappings = {}
+    field_overrides = []
 
-    # Non-reference mappings
-    for m in final_mappings:
-        all_mappings[m["column"]] = {
-            "column": m["column"],
-            "fieldName": m["fieldName"],
-            "fieldType": m["fieldType"],
-        }
+    for col_index, column_name in enumerate(columns):
+        if column_name not in mappings:
+            raise KeyError(f"No mapping found for column '{column_name}'")
 
-    # Reference mappings
-    for column, ref in ref_obj_ai_mappings.items():
-        all_mappings[column] = {
-            "column": column,
-            "fieldName": ref["parent_field_name"],
-            "fieldType": "reference",
-            "refObjectName": ref["ref_object_name"],
-            "lookupFieldName": ref["field_name"],
-        }
+        mapping = mappings[column_name]
 
-    return all_mappings
+        # Simple field
+        if mapping["fieldType"] != "reference":
+            field_overrides.append({
+                "col": col_index,
+                "fieldName": mapping["fieldName"],
+            })
+
+        # Reference field
+        else:
+            field_overrides.append({
+                "col": col_index,
+                "fieldName": mapping["fieldName"],
+                "lookupRefObject": mapping["refObjectName"],
+                "lookupFieldName": mapping["lookupFieldName"],
+                "createOnMissing": True,
+            })
+
+    return field_overrides
 
 
 # -------------------------------------------------------------------
@@ -94,7 +99,7 @@ def finalize_success(result: dict) -> None:
 
 
 def save_result(result: dict, output_file: Path) -> None:
-    print("\nSaving Step 7 results...")
+    print("\nSaving Step 8a results...")
     output_file.parent.mkdir(parents=True, exist_ok=True)
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
@@ -107,41 +112,42 @@ def save_result(result: dict, output_file: Path) -> None:
 
 def main() -> int:
     print("=" * 80)
-    print("TESTING STEP 7: BUILD FINAL MAPPINGS DICTIONARY")
-    print("PHASE 3: BUILD UNIFIED MAPPINGS")
+    print("TESTING STEP 8a: BUILD FIELD OVERRIDES")
+    print("PHASE 3: FIELD OVERRIDE CONSTRUCTION")
     print("=" * 80)
 
     root = Path(__file__).parent.parent
-    step6b_file = root / "test_results" / "step_6b_reference_mappings.json"
-    step5d_file = root / "test_results" / "step_5d_mappings_separated.json"
-    output_file = root / "test_results" / "step_7_final_mappings.json"
+    step7_file = root / "test_results" / "step_7_final_mappings.json"
+    output_file = root / "test_results" / "step_8a_field_overrides.json"
 
-    result = build_step_7_result()
+    result = build_step_8a_result()
 
     try:
-        step6b = load_json(step6b_file)
-        validate_success(step6b, "Step 6b", result)
-
-        step5d = load_json(step5d_file)
-        validate_success(step5d, "Step 5d", result)
+        step7 = load_json(step7_file)
+        validate_success(step7, "Step 7", result)
 
         if not result["errors"]:
-            final_mappings = step5d["data"]["final_mappings"]
-            ref_obj_ai_mappings = step6b["data"]["ref_obj_ai_mappings"]
+            columns = step7["data"]["columns"]
+            mappings = step7["data"]["all_mappings_dict"]
 
-            all_mappings = build_final_mappings_dict(
-                final_mappings=final_mappings,
-                ref_obj_ai_mappings=ref_obj_ai_mappings,
+            field_overrides = build_field_overrides(
+                columns=columns,
+                mappings=mappings,
             )
 
+            ref_count = sum(1 for fo in field_overrides if "lookupRefObject" in fo)
+            simple_count = len(field_overrides) - ref_count
+
             result["data"] = {
-                "object_name": step6b["data"]["object_name"],
-                "file_name": step6b["data"]["file_name"],
-                "file_path": step6b["data"]["file_path"],
-                "all_mappings_dict": all_mappings,
-                "total_mappings_count": len(all_mappings),
-                "non_reference_count": len(final_mappings),
-                "reference_count": len(ref_obj_ai_mappings),
+                "object_name": step7["data"]["object_name"],
+                "file_name": step7["data"]["file_name"],
+                "file_path": step7["data"]["file_path"],
+                "columns": columns,
+                "all_mappings_dict": mappings,
+                "field_overrides": field_overrides,
+                "field_overrides_count": len(field_overrides),
+                "simple_fields_count": simple_count,
+                "reference_fields_count": ref_count,
             }
 
     except Exception as exc:
@@ -151,9 +157,9 @@ def main() -> int:
     finalize_success(result)
     save_result(result, output_file)
 
-    print("\nFinal Step 7 result:")
+    print("\nFinal Step 8a result:")
     print(f"  Success: {result['success']}")
-    print(f"  Total mappings: {result['data'].get('total_mappings_count')}")
+    print(f"  Field overrides: {result['data'].get('field_overrides_count')}")
     print(f"  Errors: {result['errors']}")
 
     return 0 if result["success"] else 1

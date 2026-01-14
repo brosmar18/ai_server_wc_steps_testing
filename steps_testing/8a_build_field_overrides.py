@@ -3,14 +3,12 @@ from pathlib import Path
 from datetime import datetime
 import json
 
-
 # -------------------------------------------------------------------
 # Ensure project root is on PYTHONPATH
 # -------------------------------------------------------------------
 
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
-
 
 # -------------------------------------------------------------------
 # Result Builder
@@ -25,7 +23,6 @@ def build_step_8a_result() -> dict:
         "data": {},
         "errors": [],
     }
-
 
 # -------------------------------------------------------------------
 # Load Helpers
@@ -49,22 +46,24 @@ def validate_success(step_data: dict, step_name: str, result: dict) -> None:
         return
     print(f"{step_name} completed successfully.")
 
-
 # -------------------------------------------------------------------
-# Core Logic
+# Core Logic (STRICT & SAFE)
 # -------------------------------------------------------------------
 
 def build_field_overrides(columns: list, mappings: dict) -> list:
     """
-    Inline version of params_builder.build_field_overrides
+    Build fieldOverrides strictly from the final mappings dictionary.
+    Guarantees 1 override per column, no extras.
     """
     field_overrides = []
 
     for col_index, column_name in enumerate(columns):
-        if column_name not in mappings:
-            raise KeyError(f"No mapping found for column '{column_name}'")
+        mapping = mappings.get(column_name)
 
-        mapping = mappings[column_name]
+        if not mapping:
+            raise KeyError(
+                f"Column '{column_name}' has no mapping in all_mappings_dict"
+            )
 
         # Simple field
         if mapping["fieldType"] != "reference":
@@ -85,7 +84,6 @@ def build_field_overrides(columns: list, mappings: dict) -> list:
 
     return field_overrides
 
-
 # -------------------------------------------------------------------
 # Finalization
 # -------------------------------------------------------------------
@@ -101,7 +99,6 @@ def save_result(result: dict, output_file: Path) -> None:
         json.dump(result, f, indent=2)
     print(f"Saved: {output_file}")
 
-
 # -------------------------------------------------------------------
 # Main
 # -------------------------------------------------------------------
@@ -113,40 +110,43 @@ def main() -> int:
     print("=" * 80)
 
     root = Path(__file__).parent.parent
-
     step7_file = root / "test_results" / "step_7_final_mappings.json"
-    step5d_file = root / "test_results" / "step_5d_mappings_separated.json"
     output_file = root / "test_results" / "step_8a_field_overrides.json"
 
     result = build_step_8a_result()
 
     try:
+        # ------------------------------------------------------------
+        # Load Step 7 ONLY (linear pipeline)
+        # ------------------------------------------------------------
         step7 = load_json(step7_file)
-        step5d = load_json(step5d_file)
-
         validate_success(step7, "Step 7", result)
-        validate_success(step5d, "Step 5d", result)
 
         if not result["errors"]:
-            columns = step5d["data"]["columns"]
-            mappings = step7["data"]["all_mappings_dict"]
+            # Carry forward all prior data
+            result["data"] = dict(step7["data"])
+
+            columns = result["data"]["columns"]
+            mappings = result["data"]["all_mappings_dict"]
 
             field_overrides = build_field_overrides(columns, mappings)
+
+            # HARD SAFETY CHECK (prevents CDATA corruption)
+            if len(field_overrides) != len(columns):
+                raise ValueError(
+                    f"Field override count mismatch: "
+                    f"{len(field_overrides)} overrides for {len(columns)} columns"
+                )
 
             ref_count = sum(1 for fo in field_overrides if "lookupRefObject" in fo)
             simple_count = len(field_overrides) - ref_count
 
-            result["data"] = {
-                "object_name": step7["data"]["object_name"],
-                "file_name": step7["data"]["file_name"],
-                "file_path": step7["data"]["file_path"],
-                "columns": columns,
-                "all_mappings_dict": mappings,
+            result["data"].update({
                 "field_overrides": field_overrides,
                 "field_overrides_count": len(field_overrides),
                 "simple_fields_count": simple_count,
                 "reference_fields_count": ref_count,
-            }
+            })
 
     except Exception as exc:
         result["errors"].append(str(exc))

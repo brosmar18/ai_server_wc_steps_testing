@@ -28,7 +28,7 @@ def build_step_8a_result() -> dict:
 
 
 # -------------------------------------------------------------------
-# Load & Validate Step 7
+# Load Helpers
 # -------------------------------------------------------------------
 
 def load_json(path: Path) -> dict:
@@ -51,16 +51,12 @@ def validate_success(step_data: dict, step_name: str, result: dict) -> None:
 
 
 # -------------------------------------------------------------------
-# Phase 3: Build Field Overrides
+# Core Logic
 # -------------------------------------------------------------------
 
 def build_field_overrides(columns: list, mappings: dict) -> list:
     """
-    Inline implementation of params_builder.build_field_overrides()
-
-    Rules:
-    - One override per column (by index)
-    - Reference fields ALWAYS include createOnMissing=True
+    Inline version of params_builder.build_field_overrides
     """
     field_overrides = []
 
@@ -117,23 +113,25 @@ def main() -> int:
     print("=" * 80)
 
     root = Path(__file__).parent.parent
+
     step7_file = root / "test_results" / "step_7_final_mappings.json"
+    step5d_file = root / "test_results" / "step_5d_mappings_separated.json"
     output_file = root / "test_results" / "step_8a_field_overrides.json"
 
     result = build_step_8a_result()
 
     try:
         step7 = load_json(step7_file)
+        step5d = load_json(step5d_file)
+
         validate_success(step7, "Step 7", result)
+        validate_success(step5d, "Step 5d", result)
 
         if not result["errors"]:
-            columns = step7["data"]["columns"]
+            columns = step5d["data"]["columns"]
             mappings = step7["data"]["all_mappings_dict"]
 
-            field_overrides = build_field_overrides(
-                columns=columns,
-                mappings=mappings,
-            )
+            field_overrides = build_field_overrides(columns, mappings)
 
             ref_count = sum(1 for fo in field_overrides if "lookupRefObject" in fo)
             simple_count = len(field_overrides) - ref_count

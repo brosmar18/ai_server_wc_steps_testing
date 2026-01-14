@@ -1,0 +1,111 @@
+{
+  "step": "Step 8a: Build Field Overrides",
+  "step_number": "8a",
+  "success": true,
+  "timestamp": "2026-01-13T19:38:36.551371",
+  "data": {
+    "object_name": "employee",
+    "file_name": "sample_employees.csv",
+    "file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc _steps_testing\\uploads\\sample_employees.csv",
+    "columns": [
+      "Employee Number",
+      "First Name",
+      "Last Name",
+      "DOB",
+      "Hire Date",
+      "Email",
+      "Primary Job Title",
+      "Shift"
+    ],
+    "all_mappings_dict": {
+      "Employee Number": {
+        "column": "Employee Number",
+        "fieldName": "empno",
+        "fieldType": "string"
+      },
+      "First Name": {
+        "column": "First Name",
+        "fieldName": "fname",
+        "fieldType": "string"
+      },
+      "Last Name": {
+        "column": "Last Name",
+        "fieldName": "lname",
+        "fieldType": "string"
+      },
+      "DOB": {
+        "column": "DOB",
+        "fieldName": "dob",
+        "fieldType": "date"
+      },
+      "Hire Date": {
+        "column": "Hire Date",
+        "fieldName": "hiredate",
+        "fieldType": "date"
+      },
+      "Email": {
+        "column": "Email",
+        "fieldName": "email",
+        "fieldType": "email"
+      },
+      "Primary Job Title": {
+        "column": "Primary Job Title",
+        "fieldName": "emptitle",
+        "fieldType": "reference",
+        "refObjectName": "emptitle",
+        "lookupFieldName": "emptitle"
+      },
+      "Shift": {
+        "column": "Shift",
+        "fieldName": "shift",
+        "fieldType": "reference",
+        "refObjectName": "shift",
+        "lookupFieldName": "shift"
+      }
+    },
+    "field_overrides": [
+      {
+        "col": 0,
+        "fieldName": "empno"
+      },
+      {
+        "col": 1,
+        "fieldName": "fname"
+      },
+      {
+        "col": 2,
+        "fieldName": "lname"
+      },
+      {
+        "col": 3,
+        "fieldName": "dob"
+      },
+      {
+        "col": 4,
+        "fieldName": "hiredate"
+      },
+      {
+        "col": 5,
+        "fieldName": "email"
+      },
+      {
+        "col": 6,
+        "fieldName": "emptitle",
+        "lookupRefObject": "emptitle",
+        "lookupFieldName": "emptitle",
+        "createOnMissing": true
+      },
+      {
+        "col": 7,
+        "fieldName": "shift",
+        "lookupRefObject": "shift",
+        "lookupFieldName": "shift",
+        "createOnMissing": true
+      }
+    ],
+    "field_overrides_count": 8,
+    "simple_fields_count": 6,
+    "reference_fields_count": 2
+  },
+  "errors": []
+}

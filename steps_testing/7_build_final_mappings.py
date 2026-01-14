@@ -3,14 +3,12 @@ from pathlib import Path
 from datetime import datetime
 import json
 
-
 # -------------------------------------------------------------------
 # Ensure project root is on PYTHONPATH
 # -------------------------------------------------------------------
 
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
-
 
 # -------------------------------------------------------------------
 # Result Builder
@@ -25,7 +23,6 @@ def build_step_7_result() -> dict:
         "data": {},
         "errors": [],
     }
-
 
 # -------------------------------------------------------------------
 # Load & Validate Step 6b
@@ -48,7 +45,6 @@ def validate_success(step_data: dict, step_name: str, result: dict) -> None:
         print(f"Validation failed: {error}")
         return
     print(f"{step_name} completed successfully.")
-
 
 # -------------------------------------------------------------------
 # Phase 3: Build Unified Mappings
@@ -84,7 +80,6 @@ def build_final_mappings_dict(
 
     return all_mappings
 
-
 # -------------------------------------------------------------------
 # Finalization
 # -------------------------------------------------------------------
@@ -100,7 +95,6 @@ def save_result(result: dict, output_file: Path) -> None:
         json.dump(result, f, indent=2)
     print(f"Saved: {output_file}")
 
-
 # -------------------------------------------------------------------
 # Main
 # -------------------------------------------------------------------
@@ -113,36 +107,41 @@ def main() -> int:
 
     root = Path(__file__).parent.parent
     step6b_file = root / "test_results" / "step_6b_reference_mappings.json"
-    step5d_file = root / "test_results" / "step_5d_mappings_separated.json"
     output_file = root / "test_results" / "step_7_final_mappings.json"
 
     result = build_step_7_result()
 
     try:
+        # ------------------------------------------------------------
+        # Load Step 6b ONLY (linear pipeline)
+        # ------------------------------------------------------------
         step6b = load_json(step6b_file)
         validate_success(step6b, "Step 6b", result)
 
-        step5d = load_json(step5d_file)
-        validate_success(step5d, "Step 5d", result)
-
         if not result["errors"]:
-            final_mappings = step5d["data"]["final_mappings"]
-            ref_obj_ai_mappings = step6b["data"]["ref_obj_ai_mappings"]
+            # --------------------------------------------------------
+            # Carry forward ALL prior data
+            # --------------------------------------------------------
+            result["data"] = dict(step6b["data"])
 
+            final_mappings = result["data"]["final_mappings"]
+            ref_obj_ai_mappings = result["data"]["ref_obj_ai_mappings"]
+
+            # --------------------------------------------------------
+            # Build unified mappings dictionary
+            # --------------------------------------------------------
             all_mappings = build_final_mappings_dict(
                 final_mappings=final_mappings,
                 ref_obj_ai_mappings=ref_obj_ai_mappings,
             )
 
-            result["data"] = {
-                "object_name": step6b["data"]["object_name"],
-                "file_name": step6b["data"]["file_name"],
-                "file_path": step6b["data"]["file_path"],
-                "all_mappings_dict": all_mappings,
-                "total_mappings_count": len(all_mappings),
-                "non_reference_count": len(final_mappings),
-                "reference_count": len(ref_obj_ai_mappings),
-            }
+            # --------------------------------------------------------
+            # Add Step 7 outputs
+            # --------------------------------------------------------
+            result["data"]["all_mappings_dict"] = all_mappings
+            result["data"]["total_mappings_count"] = len(all_mappings)
+            result["data"]["non_reference_count"] = len(final_mappings)
+            result["data"]["reference_count"] = len(ref_obj_ai_mappings)
 
     except Exception as exc:
         result["errors"].append(str(exc))

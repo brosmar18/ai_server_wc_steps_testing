@@ -1,0 +1,1777 @@
+{
+  "step": "Step 7: Build Final Mappings Dictionary",
+  "step_number": "7",
+  "success": true,
+  "timestamp": "2026-01-13T20:21:41.733303",
+  "data": {
+    "object_name": "employee",
+    "file_name": "sample_employees.csv",
+    "file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc _steps_testing\\uploads\\sample_employees.csv",
+    "columns": [
+      "Employee Number",
+      "First Name",
+      "Last Name",
+      "DOB",
+      "Hire Date",
+      "Email",
+      "Primary Job Title",
+      "Shift"
+    ],
+    "raw_fields": [
+      {
+        "fieldName": "ad_user",
+        "fieldType": "string",
+        "label": "AD Username",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "ad_user",
+          "fieldOrVar": "field",
+          "guid": "74f8e40a-f6f0-4ea8-ad14-6f3cb2a14abd",
+          "label": "AD Username",
+          "labelPosition": "",
+          "length": 25,
+          "masked": false,
+          "name": "ad_user",
+          "refreshObject": false,
+          "required": false,
+          "title": "AD Username",
+          "type": "string",
+          "uri": "object/employee/74f8e40a-f6f0-4ea8-ad14-6f3cb2a14abd"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "address",
+        "fieldType": "string",
+        "label": "Address",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "address",
+          "fieldOrVar": "field",
+          "guid": "3b650f72-f7cc-4f28-94d2-176ec507040f",
+          "label": "Address",
+          "labelPosition": "",
+          "length": 100,
+          "masked": false,
+          "name": "address",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the employee&#039;s address",
+          "type": "string",
+          "uri": "object/employee/3b650f72-f7cc-4f28-94d2-176ec507040f"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "address2",
+        "fieldType": "string",
+        "label": "Address 2",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "address2",
+          "fieldOrVar": "field",
+          "guid": "7d6c33a9-4c1a-4c0e-942f-c34549cef6d1",
+          "label": "Address 2",
+          "labelPosition": "",
+          "length": 100,
+          "masked": false,
+          "name": "address2",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter an additional address for the employee",
+          "type": "string",
+          "uri": "object/employee/7d6c33a9-4c1a-4c0e-942f-c34549cef6d1"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "altphone",
+        "fieldType": "string",
+        "label": "Alt Phone",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "altphone",
+          "fieldOrVar": "field",
+          "guid": "cdbc034e-6f92-4ed5-9269-ca2e5614bda3",
+          "label": "Alt Phone",
+          "labelPosition": "",
+          "length": 20,
+          "masked": false,
+          "name": "altphone",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter an alternative phone number for the employee",
+          "type": "string",
+          "uri": "object/employee/cdbc034e-6f92-4ed5-9269-ca2e5614bda3"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "badge_no",
+        "fieldType": "string",
+        "label": "Badge No",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "badge_no",
+          "fieldOrVar": "field",
+          "guid": "83fc189f-847d-479f-84bb-13bf5f1d2472",
+          "label": "Badge No",
+          "labelPosition": "",
+          "length": 50,
+          "masked": false,
+          "name": "badge_no",
+          "refreshObject": false,
+          "required": false,
+          "title": "Badge No",
+          "type": "string",
+          "uri": "object/employee/83fc189f-847d-479f-84bb-13bf5f1d2472"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "city",
+        "fieldType": "string",
+        "label": "City",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "city",
+          "fieldOrVar": "field",
+          "guid": "b548243e-4ea4-4c12-afcf-be677aa4230d",
+          "label": "City",
+          "labelPosition": "",
+          "length": 25,
+          "masked": false,
+          "name": "city",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the city for the employee",
+          "type": "string",
+          "uri": "object/employee/b548243e-4ea4-4c12-afcf-be677aa4230d"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "comments",
+        "fieldType": "memo",
+        "label": "Comments",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "comments",
+          "fieldOrVar": "field",
+          "guid": "1cded226-430e-4817-a141-edebb7b2989a",
+          "label": "Comments",
+          "labelPosition": "",
+          "name": "comments",
+          "refreshObject": false,
+          "required": false,
+          "rows": "5",
+          "title": "Enter any additional comments about the employee",
+          "type": "memo",
+          "uri": "object/employee/1cded226-430e-4817-a141-edebb7b2989a"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "dob",
+        "fieldType": "date",
+        "label": "Date Of Birth",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "dob",
+          "fieldOrVar": "field",
+          "guid": "5d968b34-b8da-474d-8e6d-0840fa035264",
+          "label": "Date Of Birth",
+          "labelPosition": "",
+          "name": "dob",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the date of birth for the employee",
+          "type": "date",
+          "uri": "object/employee/5d968b34-b8da-474d-8e6d-0840fa035264"
+        },
+        "relationalOp": "within_range",
+        "visible": false
+      },
+      {
+        "fieldName": "dominant_hand",
+        "fieldType": "staticlist",
+        "label": "Dominant Hand",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "controlType": "selector",
+          "fieldName": "dominant_hand",
+          "fieldOrVar": "field",
+          "goToNextRecord": false,
+          "guid": "3e886fe1-eeec-4985-900b-fc1c89499836",
+          "hasDynamicItems": false,
+          "label": "Dominant Hand",
+          "labelPosition": "",
+          "name": "dominant_hand",
+          "refreshObject": false,
+          "required": false,
+          "size": "",
+          "staticPairList": [
+            {
+              "label": "Right",
+              "value": "right"
+            },
+            {
+              "label": "Left",
+              "value": "left"
+            },
+            {
+              "label": "Ambidextrous",
+              "value": "ambi"
+            }
+          ],
+          "title": "Dominant Hand",
+          "type": "staticlist",
+          "uri": "object/employee/3e886fe1-eeec-4985-900b-fc1c89499836"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "email",
+        "fieldType": "email",
+        "label": "Email",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "email",
+          "fieldOrVar": "field",
+          "guid": "44b399d2-904c-4f64-ad30-9f17fd3de8f1",
+          "label": "Email",
+          "labelPosition": "",
+          "length": 50,
+          "name": "email",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter an email address for the employee",
+          "type": "email",
+          "uri": "object/employee/44b399d2-904c-4f64-ad30-9f17fd3de8f1"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "empno",
+        "fieldType": "string",
+        "label": "Emp No",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "empno",
+          "fieldOrVar": "field",
+          "guid": "4dc4b25a-b9b4-423e-a2e7-36246013c9a7",
+          "label": "Emp No",
+          "labelPosition": "",
+          "length": 26,
+          "masked": false,
+          "name": "empno",
+          "refreshObject": false,
+          "required": true,
+          "title": "Employee Number",
+          "type": "string",
+          "uri": "object/employee/4dc4b25a-b9b4-423e-a2e7-36246013c9a7"
+        },
+        "relationalOp": "contain",
+        "visible": true
+      },
+      {
+        "fieldName": "shift",
+        "fieldType": "reference",
+        "label": "Emp Shift",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "shift",
+          "fieldOrVar": "field",
+          "guid": "7f477b9d-7642-4ec4-b969-93d302b94af4",
+          "label": "Emp Shift",
+          "labelPosition": "",
+          "name": "shift",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [],
+          "refObjects": [
+            {
+              "addable": true,
+              "displayString": "",
+              "label": "Shift",
+              "name": "shift"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Select the Shift this Employee normally works",
+          "type": "reference",
+          "uri": "object/employee/7f477b9d-7642-4ec4-b969-93d302b94af4"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "emppict",
+        "fieldType": "image",
+        "label": "Employee Picture",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "emppict",
+          "fieldOrVar": "field",
+          "guid": "77c73007-85a8-4c0a-9c80-b2371e298105",
+          "heightInLines": "",
+          "label": "Employee Picture",
+          "labelPosition": "",
+          "name": "emppict",
+          "refreshObject": false,
+          "required": false,
+          "title": "Insert The Employees Picture Here",
+          "type": "image",
+          "uri": "object/employee/77c73007-85a8-4c0a-9c80-b2371e298105"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "employee_type",
+        "fieldType": "staticlist",
+        "label": "Employee Type",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "controlType": "selector",
+          "fieldName": "employee_type",
+          "fieldOrVar": "field",
+          "goToNextRecord": false,
+          "guid": "82252404-2045-48b8-817f-a4b1570b52d8",
+          "hasDynamicItems": false,
+          "label": "Employee Type",
+          "labelPosition": "",
+          "name": "employee_type",
+          "refreshObject": false,
+          "required": false,
+          "size": "",
+          "staticPairList": [
+            {
+              "label": "Employee",
+              "value": "Employee"
+            },
+            {
+              "label": "Non-Employee",
+              "value": "Non-Employee"
+            },
+            {
+              "label": "Location",
+              "value": "Location"
+            }
+          ],
+          "title": "Employee Type",
+          "type": "staticlist",
+          "uri": "object/employee/82252404-2045-48b8-817f-a4b1570b52d8"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "inact",
+        "fieldType": "bool",
+        "label": "Employee is Inactive",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "controlType": "checkbox",
+          "fieldName": "inact",
+          "fieldOrVar": "field",
+          "guid": "7c9177a1-f011-4142-92d8-81536ea18fe3",
+          "label": "Employee is Inactive",
+          "labelPosition": "",
+          "name": "inact",
+          "refreshObject": false,
+          "required": false,
+          "title": "Check this box if the employee is inactive",
+          "type": "bool",
+          "uri": "object/employee/7c9177a1-f011-4142-92d8-81536ea18fe3"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "ethnicity",
+        "fieldType": "reference",
+        "label": "Ethnicity",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "ethnicity",
+          "fieldOrVar": "field",
+          "guid": "16abe5d6-47ad-40eb-9a65-6756550b4a62",
+          "label": "Ethnicity",
+          "labelPosition": "",
+          "name": "ethnicity",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [],
+          "refObjects": [
+            {
+              "addable": true,
+              "displayString": "",
+              "label": "Ethnicity",
+              "name": "ethnicity"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Ethnicity",
+          "type": "reference",
+          "uri": "object/employee/16abe5d6-47ad-40eb-9a65-6756550b4a62"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "fax",
+        "fieldType": "string",
+        "label": "Fax",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "fax",
+          "fieldOrVar": "field",
+          "guid": "0bc67c74-3a37-4a5e-bc14-300128a31482",
+          "label": "Fax",
+          "labelPosition": "",
+          "length": 20,
+          "masked": false,
+          "name": "fax",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter a fax number for the employee",
+          "type": "string",
+          "uri": "object/employee/0bc67c74-3a37-4a5e-bc14-300128a31482"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "fname",
+        "fieldType": "string",
+        "label": "First Name",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "fname",
+          "fieldOrVar": "field",
+          "guid": "c6202116-0a3c-45ea-ac6c-f2091e189899",
+          "label": "First Name",
+          "labelPosition": "",
+          "length": 50,
+          "masked": false,
+          "name": "fname",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the employee&#039;s first name",
+          "type": "string",
+          "uri": "object/employee/c6202116-0a3c-45ea-ac6c-f2091e189899"
+        },
+        "relationalOp": "contain",
+        "visible": true
+      },
+      {
+        "fieldName": "gender",
+        "fieldType": "reference",
+        "label": "Gender",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "gender",
+          "fieldOrVar": "field",
+          "guid": "51a41c8e-a998-4b27-a8ef-612f5cef1d59",
+          "label": "Gender",
+          "labelPosition": "",
+          "name": "gender",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [],
+          "refObjects": [
+            {
+              "addable": true,
+              "displayString": "",
+              "label": "Gender",
+              "name": "gender"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Gender",
+          "type": "reference",
+          "uri": "object/employee/51a41c8e-a998-4b27-a8ef-612f5cef1d59"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "hat_size",
+        "fieldType": "string",
+        "label": "Hat Size",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "hat_size",
+          "fieldOrVar": "field",
+          "guid": "9bb9b479-2129-4b18-98da-62b663a90065",
+          "label": "Hat Size",
+          "labelPosition": "",
+          "length": 25,
+          "masked": false,
+          "name": "hat_size",
+          "refreshObject": false,
+          "required": false,
+          "title": "Hat Size",
+          "type": "string",
+          "uri": "object/employee/9bb9b479-2129-4b18-98da-62b663a90065"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "hierlvl1",
+        "fieldType": "reference",
+        "label": "Hierarchy Level 1",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "hierlvl1",
+          "fieldOrVar": "field",
+          "guid": "13aef038-2346-4411-9f99-6aaf6782e117",
+          "label": "Hierarchy Level 1",
+          "labelPosition": "",
+          "name": "hierlvl1",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [
+            {
+              "enabled": true,
+              "name": "Active Division",
+              "selectable": true
+            }
+          ],
+          "refObjects": [
+            {
+              "addable": false,
+              "displayString": "",
+              "label": "Hierarchy Level 1",
+              "name": "hierlvl1"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "main",
+          "title": "Hierarchy Level 1 that this Emplyee belongs to",
+          "type": "reference",
+          "uri": "object/employee/13aef038-2346-4411-9f99-6aaf6782e117"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "hierlvl2",
+        "fieldType": "reference",
+        "label": "Hierarchy Level 2",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "hierlvl2",
+          "fieldOrVar": "field",
+          "guid": "b5566af5-b843-48cc-a7db-1f288eb7e145",
+          "label": "Hierarchy Level 2",
+          "labelPosition": "",
+          "name": "hierlvl2",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [
+            {
+              "enabled": true,
+              "name": "Active Section",
+              "selectable": true
+            }
+          ],
+          "refObjects": [
+            {
+              "addable": false,
+              "displayString": "",
+              "label": "Hierarchy Level 2",
+              "name": "hierlvl2"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Hierarchy Level 2 that this Emplyee belongs to",
+          "type": "reference",
+          "uri": "object/employee/b5566af5-b843-48cc-a7db-1f288eb7e145"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "hierlvl9",
+        "fieldType": "reference",
+        "label": "Hierarchy Level 9",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "hierlvl9",
+          "fieldOrVar": "field",
+          "guid": "d5eed4b1-fa89-4e47-a8b0-861d29eed31d",
+          "label": "Hierarchy Level 9",
+          "labelPosition": "",
+          "name": "hierlvl9",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [
+            {
+              "enabled": true,
+              "name": "Active Squad",
+              "selectable": true
+            }
+          ],
+          "refObjects": [
+            {
+              "addable": false,
+              "displayString": "",
+              "label": "Hierarchy Level 9",
+              "name": "hierlvl9"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Hierarchy Level 9 that this Emplyee belongs to",
+          "type": "reference",
+          "uri": "object/employee/d5eed4b1-fa89-4e47-a8b0-861d29eed31d"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "hiredate",
+        "fieldType": "date",
+        "label": "Hire Date",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "hiredate",
+          "fieldOrVar": "field",
+          "guid": "255fbe04-5d1d-4a4d-b7bc-c29fff8988fd",
+          "label": "Hire Date",
+          "labelPosition": "",
+          "name": "hiredate",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the employee hire date",
+          "type": "date",
+          "uri": "object/employee/255fbe04-5d1d-4a4d-b7bc-c29fff8988fd"
+        },
+        "relationalOp": "within_range",
+        "visible": false
+      },
+      {
+        "fieldName": "inseam",
+        "fieldType": "string",
+        "label": "Inseam",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "inseam",
+          "fieldOrVar": "field",
+          "guid": "a1a909b7-3434-4d19-b2a1-646b2185b0cc",
+          "label": "Inseam",
+          "labelPosition": "",
+          "length": 25,
+          "masked": false,
+          "name": "inseam",
+          "refreshObject": false,
+          "required": false,
+          "title": "Inseam",
+          "type": "string",
+          "uri": "object/employee/a1a909b7-3434-4d19-b2a1-646b2185b0cc"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "language",
+        "fieldType": "staticlist",
+        "label": "Language",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "controlType": "selector",
+          "fieldName": "language",
+          "fieldOrVar": "field",
+          "goToNextRecord": false,
+          "guid": "1fdc5869-ac2f-4d64-b452-5d4c13f5e14e",
+          "hasDynamicItems": false,
+          "label": "Language",
+          "labelPosition": "",
+          "name": "language",
+          "refreshObject": false,
+          "required": false,
+          "size": "",
+          "staticPairList": [
+            {
+              "label": "English",
+              "value": "english"
+            },
+            {
+              "label": "Spanish",
+              "value": "spanish"
+            }
+          ],
+          "title": "Ths field controls which language is used in a few areas of the system, mostly around work done by Technicians",
+          "type": "staticlist",
+          "uri": "object/employee/1fdc5869-ac2f-4d64-b452-5d4c13f5e14e"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "lname",
+        "fieldType": "string",
+        "label": "Last Name",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "lname",
+          "fieldOrVar": "field",
+          "guid": "864bb41d-9e2b-436b-9187-672c17377085",
+          "label": "Last Name",
+          "labelPosition": "",
+          "length": 50,
+          "masked": false,
+          "name": "lname",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the employee&#039;s last name",
+          "type": "string",
+          "uri": "object/employee/864bb41d-9e2b-436b-9187-672c17377085"
+        },
+        "relationalOp": "contain",
+        "visible": true
+      },
+      {
+        "fieldName": "manager",
+        "fieldType": "reference",
+        "label": "Manager",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "manager",
+          "fieldOrVar": "field",
+          "guid": "148cf34f-bc00-4fe0-8827-863e5b526f8e",
+          "label": "Manager",
+          "labelPosition": "",
+          "name": "manager",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [
+            {
+              "enabled": false,
+              "name": "Technicians for Manager Dashboard Filter",
+              "selectable": true
+            },
+            {
+              "enabled": false,
+              "name": "Active Employees with Items Issued",
+              "selectable": true
+            },
+            {
+              "enabled": true,
+              "name": "Active Employees",
+              "selectable": true
+            },
+            {
+              "enabled": false,
+              "name": "Managers",
+              "selectable": true
+            },
+            {
+              "enabled": false,
+              "name": "Technicians for Manager Dashboard Calendar",
+              "selectable": true
+            },
+            {
+              "enabled": false,
+              "name": "Inactive Employees",
+              "selectable": true
+            },
+            {
+              "enabled": false,
+              "name": "Drivers",
+              "selectable": true
+            },
+            {
+              "enabled": false,
+              "name": "Technicians",
+              "selectable": true
+            }
+          ],
+          "refObjects": [
+            {
+              "addable": true,
+              "displayString": "",
+              "label": "Employee",
+              "name": "employee"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Manager",
+          "type": "reference",
+          "uri": "object/employee/148cf34f-bc00-4fe0-8827-863e5b526f8e"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "mobile",
+        "fieldType": "string",
+        "label": "Mobile",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "mobile",
+          "fieldOrVar": "field",
+          "guid": "a8ce5258-30fc-4d4f-ac65-59dcf9e5b8f5",
+          "label": "Mobile",
+          "labelPosition": "",
+          "length": 20,
+          "masked": false,
+          "name": "mobile",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter a cellular phone number for the employee",
+          "type": "string",
+          "uri": "object/employee/a8ce5258-30fc-4d4f-ac65-59dcf9e5b8f5"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "neck_size",
+        "fieldType": "string",
+        "label": "Neck Size",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "neck_size",
+          "fieldOrVar": "field",
+          "guid": "6eb4d760-7bd5-404b-bc26-eb7001c4e8d3",
+          "label": "Neck Size",
+          "labelPosition": "",
+          "length": 25,
+          "masked": false,
+          "name": "neck_size",
+          "refreshObject": false,
+          "required": false,
+          "title": "Neck Size",
+          "type": "string",
+          "uri": "object/employee/6eb4d760-7bd5-404b-bc26-eb7001c4e8d3"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "phone",
+        "fieldType": "string",
+        "label": "Phone",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "phone",
+          "fieldOrVar": "field",
+          "guid": "f310b764-6242-40e2-ae47-53f9f3fa710b",
+          "label": "Phone",
+          "labelPosition": "",
+          "length": 20,
+          "masked": false,
+          "name": "phone",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the employee&#039;s phone number",
+          "type": "string",
+          "uri": "object/employee/f310b764-6242-40e2-ae47-53f9f3fa710b"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "postcode",
+        "fieldType": "string",
+        "label": "Postal Code",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "postcode",
+          "fieldOrVar": "field",
+          "guid": "25a6f149-b18c-4eeb-bb1a-a824ec52c0cf",
+          "label": "Postal Code",
+          "labelPosition": "",
+          "length": 25,
+          "masked": false,
+          "name": "postcode",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the postal code for the employee",
+          "type": "string",
+          "uri": "object/employee/25a6f149-b18c-4eeb-bb1a-a824ec52c0cf"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "emptitle",
+        "fieldType": "reference",
+        "label": "Primary Job Title",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "emptitle",
+          "fieldOrVar": "field",
+          "guid": "cb0acd0e-5320-4c30-8e4f-b44d36b574cc",
+          "label": "Primary Job Title",
+          "labelPosition": "",
+          "name": "emptitle",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [],
+          "refObjects": [
+            {
+              "addable": true,
+              "displayString": "",
+              "label": "Job Title",
+              "name": "emptitle"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Select the Job Title for this employee.",
+          "type": "reference",
+          "uri": "object/employee/cb0acd0e-5320-4c30-8e4f-b44d36b574cc"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "emprank",
+        "fieldType": "reference",
+        "label": "Rank",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "emprank",
+          "fieldOrVar": "field",
+          "guid": "b6b97678-c12f-4cb1-8371-849395c42cf8",
+          "label": "Rank",
+          "labelPosition": "",
+          "name": "emprank",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [],
+          "refObjects": [
+            {
+              "addable": true,
+              "displayString": "",
+              "label": "Rank",
+              "name": "emprank"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Select the Rank for this employee.",
+          "type": "reference",
+          "uri": "object/employee/b6b97678-c12f-4cb1-8371-849395c42cf8"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "relreas",
+        "fieldType": "memo",
+        "label": "Release Comments",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "relreas",
+          "fieldOrVar": "field",
+          "guid": "7d9ed018-5d54-4aab-925d-3620c463e215",
+          "label": "Release Comments",
+          "labelPosition": "",
+          "name": "relreas",
+          "refreshObject": false,
+          "required": false,
+          "rows": "5",
+          "title": "Comment on the reason for release",
+          "type": "memo",
+          "uri": "object/employee/7d9ed018-5d54-4aab-925d-3620c463e215"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "reldate",
+        "fieldType": "date",
+        "label": "Release Date",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "reldate",
+          "fieldOrVar": "field",
+          "guid": "30fa574a-e39b-43bc-a77c-a4db816551ff",
+          "label": "Release Date",
+          "labelPosition": "",
+          "name": "reldate",
+          "refreshObject": false,
+          "required": false,
+          "title": "Enter the employee release date",
+          "type": "date",
+          "uri": "object/employee/30fa574a-e39b-43bc-a77c-a4db816551ff"
+        },
+        "relationalOp": "within_range",
+        "visible": false
+      },
+      {
+        "fieldName": "relreason",
+        "fieldType": "reference",
+        "label": "Release Reason",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "relreason",
+          "fieldOrVar": "field",
+          "guid": "b13f5f2c-801d-44dd-853c-8b6ed7cf73c7",
+          "label": "Release Reason",
+          "labelPosition": "",
+          "name": "relreason",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [],
+          "refObjects": [
+            {
+              "addable": true,
+              "displayString": "",
+              "label": "Employee Release Reason",
+              "name": "emprelease"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Enter the reason for the release of the employee",
+          "type": "reference",
+          "uri": "object/employee/b13f5f2c-801d-44dd-853c-8b6ed7cf73c7"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "sid",
+        "fieldType": "string",
+        "label": "SID",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "sid",
+          "fieldOrVar": "field",
+          "guid": "91efc8b1-e07f-4675-94e6-ef1e2ef9f867",
+          "label": "SID",
+          "labelPosition": "",
+          "length": 50,
+          "masked": false,
+          "name": "sid",
+          "refreshObject": false,
+          "required": false,
+          "title": "SID",
+          "type": "string",
+          "uri": "object/employee/91efc8b1-e07f-4675-94e6-ef1e2ef9f867"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "signature",
+        "fieldType": "image",
+        "label": "Signature",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "signature",
+          "fieldOrVar": "field",
+          "guid": "7062af50-8e4d-4532-8d82-59a7f535cc9a",
+          "label": "Signature",
+          "labelPosition": "",
+          "name": "signature",
+          "refreshObject": false,
+          "required": false,
+          "title": "Signature",
+          "type": "signature",
+          "uri": "object/employee/7062af50-8e4d-4532-8d82-59a7f535cc9a"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "sleeve_length",
+        "fieldType": "string",
+        "label": "Sleeve Length",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "sleeve_length",
+          "fieldOrVar": "field",
+          "guid": "f6b8ddf0-fe70-4e28-a0e6-6b25c550999e",
+          "label": "Sleeve Length",
+          "labelPosition": "",
+          "length": 25,
+          "masked": false,
+          "name": "sleeve_length",
+          "refreshObject": false,
+          "required": false,
+          "title": "Sleeve Length",
+          "type": "string",
+          "uri": "object/employee/f6b8ddf0-fe70-4e28-a0e6-6b25c550999e"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      },
+      {
+        "fieldName": "state",
+        "fieldType": "reference",
+        "label": "State",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "ellipseViews": [],
+          "fieldName": "state",
+          "fieldOrVar": "field",
+          "guid": "da065f90-4fd4-4079-b02a-1e86464f2636",
+          "label": "State",
+          "labelPosition": "",
+          "name": "state",
+          "preferredRefRecordLimit": 0,
+          "preferredReferenceType": "reference_control",
+          "queries": [],
+          "refObjects": [
+            {
+              "addable": true,
+              "displayString": "",
+              "label": "State",
+              "name": "state"
+            }
+          ],
+          "refreshObject": true,
+          "required": false,
+          "scannable": false,
+          "sort": "",
+          "title": "Enter the State for the Employee",
+          "type": "reference",
+          "uri": "object/employee/da065f90-4fd4-4079-b02a-1e86464f2636"
+        },
+        "relationalOp": "=",
+        "visible": false
+      },
+      {
+        "fieldName": "waist",
+        "fieldType": "string",
+        "label": "Waist",
+        "options": {
+          "altVarName": "",
+          "clearOnHidden": false,
+          "fieldName": "waist",
+          "fieldOrVar": "field",
+          "guid": "32b8d380-6c88-4dec-a506-d5a53a75bf04",
+          "label": "Waist",
+          "labelPosition": "",
+          "length": 25,
+          "masked": false,
+          "name": "waist",
+          "refreshObject": false,
+          "required": false,
+          "title": "Waist",
+          "type": "string",
+          "uri": "object/employee/32b8d380-6c88-4dec-a506-d5a53a75bf04"
+        },
+        "relationalOp": "contain",
+        "visible": false
+      }
+    ],
+    "formatted_fields": [
+      {
+        "field_name": "ad_user",
+        "label": "AD Username",
+        "field_type": "string"
+      },
+      {
+        "field_name": "address",
+        "label": "Address",
+        "field_type": "string"
+      },
+      {
+        "field_name": "address2",
+        "label": "Address 2",
+        "field_type": "string"
+      },
+      {
+        "field_name": "altphone",
+        "label": "Alt Phone",
+        "field_type": "string"
+      },
+      {
+        "field_name": "badge_no",
+        "label": "Badge No",
+        "field_type": "string"
+      },
+      {
+        "field_name": "city",
+        "label": "City",
+        "field_type": "string"
+      },
+      {
+        "field_name": "comments",
+        "label": "Comments",
+        "field_type": "memo"
+      },
+      {
+        "field_name": "dob",
+        "label": "Date Of Birth",
+        "field_type": "date"
+      },
+      {
+        "field_name": "dominant_hand",
+        "label": "Dominant Hand",
+        "field_type": "staticlist"
+      },
+      {
+        "field_name": "email",
+        "label": "Email",
+        "field_type": "email"
+      },
+      {
+        "field_name": "empno",
+        "label": "Emp No",
+        "field_type": "string"
+      },
+      {
+        "field_name": "shift",
+        "label": "Emp Shift",
+        "field_type": "reference",
+        "ref_object_name": "shift"
+      },
+      {
+        "field_name": "emppict",
+        "label": "Employee Picture",
+        "field_type": "image"
+      },
+      {
+        "field_name": "employee_type",
+        "label": "Employee Type",
+        "field_type": "staticlist"
+      },
+      {
+        "field_name": "inact",
+        "label": "Employee is Inactive",
+        "field_type": "bool"
+      },
+      {
+        "field_name": "ethnicity",
+        "label": "Ethnicity",
+        "field_type": "reference",
+        "ref_object_name": "ethnicity"
+      },
+      {
+        "field_name": "fax",
+        "label": "Fax",
+        "field_type": "string"
+      },
+      {
+        "field_name": "fname",
+        "label": "First Name",
+        "field_type": "string"
+      },
+      {
+        "field_name": "gender",
+        "label": "Gender",
+        "field_type": "reference",
+        "ref_object_name": "gender"
+      },
+      {
+        "field_name": "hat_size",
+        "label": "Hat Size",
+        "field_type": "string"
+      },
+      {
+        "field_name": "hierlvl1",
+        "label": "Hierarchy Level 1",
+        "field_type": "reference",
+        "ref_object_name": "hierlvl1"
+      },
+      {
+        "field_name": "hierlvl2",
+        "label": "Hierarchy Level 2",
+        "field_type": "reference",
+        "ref_object_name": "hierlvl2"
+      },
+      {
+        "field_name": "hierlvl9",
+        "label": "Hierarchy Level 9",
+        "field_type": "reference",
+        "ref_object_name": "hierlvl9"
+      },
+      {
+        "field_name": "hiredate",
+        "label": "Hire Date",
+        "field_type": "date"
+      },
+      {
+        "field_name": "inseam",
+        "label": "Inseam",
+        "field_type": "string"
+      },
+      {
+        "field_name": "language",
+        "label": "Language",
+        "field_type": "staticlist"
+      },
+      {
+        "field_name": "lname",
+        "label": "Last Name",
+        "field_type": "string"
+      },
+      {
+        "field_name": "manager",
+        "label": "Manager",
+        "field_type": "reference",
+        "ref_object_name": "employee"
+      },
+      {
+        "field_name": "mobile",
+        "label": "Mobile",
+        "field_type": "string"
+      },
+      {
+        "field_name": "neck_size",
+        "label": "Neck Size",
+        "field_type": "string"
+      },
+      {
+        "field_name": "phone",
+        "label": "Phone",
+        "field_type": "string"
+      },
+      {
+        "field_name": "postcode",
+        "label": "Postal Code",
+        "field_type": "string"
+      },
+      {
+        "field_name": "emptitle",
+        "label": "Primary Job Title",
+        "field_type": "reference",
+        "ref_object_name": "emptitle"
+      },
+      {
+        "field_name": "emprank",
+        "label": "Rank",
+        "field_type": "reference",
+        "ref_object_name": "emprank"
+      },
+      {
+        "field_name": "relreas",
+        "label": "Release Comments",
+        "field_type": "memo"
+      },
+      {
+        "field_name": "reldate",
+        "label": "Release Date",
+        "field_type": "date"
+      },
+      {
+        "field_name": "relreason",
+        "label": "Release Reason",
+        "field_type": "reference",
+        "ref_object_name": "emprelease"
+      },
+      {
+        "field_name": "sid",
+        "label": "SID",
+        "field_type": "string"
+      },
+      {
+        "field_name": "signature",
+        "label": "Signature",
+        "field_type": "image"
+      },
+      {
+        "field_name": "sleeve_length",
+        "label": "Sleeve Length",
+        "field_type": "string"
+      },
+      {
+        "field_name": "state",
+        "label": "State",
+        "field_type": "reference",
+        "ref_object_name": "state"
+      },
+      {
+        "field_name": "waist",
+        "label": "Waist",
+        "field_type": "string"
+      }
+    ],
+    "agent_created": true,
+    "agent_name": "mapping_agent",
+    "agent_instructions_length": 3156,
+    "prompt": "Column List: ['Employee Number', 'First Name', 'Last Name', 'DOB', 'Hire Date', 'Email', 'Primary Job Title', 'Shift'],\nFields Object: {\"fields\": [{\"field_name\": \"ad_user\", \"label\": \"AD Username\", \"field_type\": \"string\"}, {\"field_name\": \"address\", \"label\": \"Address\", \"field_type\": \"string\"}, {\"field_name\": \"address2\", \"label\": \"Address 2\", \"field_type\": \"string\"}, {\"field_name\": \"altphone\", \"label\": \"Alt Phone\", \"field_type\": \"string\"}, {\"field_name\": \"badge_no\", \"label\": \"Badge No\", \"field_type\": \"string\"}, {\"field_name\": \"city\", \"label\": \"City\", \"field_type\": \"string\"}, {\"field_name\": \"comments\", \"label\": \"Comments\", \"field_type\": \"memo\"}, {\"field_name\": \"dob\", \"label\": \"Date Of Birth\", \"field_type\": \"date\"}, {\"field_name\": \"dominant_hand\", \"label\": \"Dominant Hand\", \"field_type\": \"staticlist\"}, {\"field_name\": \"email\", \"label\": \"Email\", \"field_type\": \"email\"}, {\"field_name\": \"empno\", \"label\": \"Emp No\", \"field_type\": \"string\"}, {\"field_name\": \"shift\", \"label\": \"Emp Shift\", \"field_type\": \"reference\", \"ref_object_name\": \"shift\"}, {\"field_name\": \"emppict\", \"label\": \"Employee Picture\", \"field_type\": \"image\"}, {\"field_name\": \"employee_type\", \"label\": \"Employee Type\", \"field_type\": \"staticlist\"}, {\"field_name\": \"inact\", \"label\": \"Employee is Inactive\", \"field_type\": \"bool\"}, {\"field_name\": \"ethnicity\", \"label\": \"Ethnicity\", \"field_type\": \"reference\", \"ref_object_name\": \"ethnicity\"}, {\"field_name\": \"fax\", \"label\": \"Fax\", \"field_type\": \"string\"}, {\"field_name\": \"fname\", \"label\": \"First Name\", \"field_type\": \"string\"}, {\"field_name\": \"gender\", \"label\": \"Gender\", \"field_type\": \"reference\", \"ref_object_name\": \"gender\"}, {\"field_name\": \"hat_size\", \"label\": \"Hat Size\", \"field_type\": \"string\"}, {\"field_name\": \"hierlvl1\", \"label\": \"Hierarchy Level 1\", \"field_type\": \"reference\", \"ref_object_name\": \"hierlvl1\"}, {\"field_name\": \"hierlvl2\", \"label\": \"Hierarchy Level 2\", \"field_type\": \"reference\", \"ref_object_name\": \"hierlvl2\"}, {\"field_name\": \"hierlvl9\", \"label\": \"Hierarchy Level 9\", \"field_type\": \"reference\", \"ref_object_name\": \"hierlvl9\"}, {\"field_name\": \"hiredate\", \"label\": \"Hire Date\", \"field_type\": \"date\"}, {\"field_name\": \"inseam\", \"label\": \"Inseam\", \"field_type\": \"string\"}, {\"field_name\": \"language\", \"label\": \"Language\", \"field_type\": \"staticlist\"}, {\"field_name\": \"lname\", \"label\": \"Last Name\", \"field_type\": \"string\"}, {\"field_name\": \"manager\", \"label\": \"Manager\", \"field_type\": \"reference\", \"ref_object_name\": \"employee\"}, {\"field_name\": \"mobile\", \"label\": \"Mobile\", \"field_type\": \"string\"}, {\"field_name\": \"neck_size\", \"label\": \"Neck Size\", \"field_type\": \"string\"}, {\"field_name\": \"phone\", \"label\": \"Phone\", \"field_type\": \"string\"}, {\"field_name\": \"postcode\", \"label\": \"Postal Code\", \"field_type\": \"string\"}, {\"field_name\": \"emptitle\", \"label\": \"Primary Job Title\", \"field_type\": \"reference\", \"ref_object_name\": \"emptitle\"}, {\"field_name\": \"emprank\", \"label\": \"Rank\", \"field_type\": \"reference\", \"ref_object_name\": \"emprank\"}, {\"field_name\": \"relreas\", \"label\": \"Release Comments\", \"field_type\": \"memo\"}, {\"field_name\": \"reldate\", \"label\": \"Release Date\", \"field_type\": \"date\"}, {\"field_name\": \"relreason\", \"label\": \"Release Reason\", \"field_type\": \"reference\", \"ref_object_name\": \"emprelease\"}, {\"field_name\": \"sid\", \"label\": \"SID\", \"field_type\": \"string\"}, {\"field_name\": \"signature\", \"label\": \"Signature\", \"field_type\": \"image\"}, {\"field_name\": \"sleeve_length\", \"label\": \"Sleeve Length\", \"field_type\": \"string\"}, {\"field_name\": \"state\", \"label\": \"State\", \"field_type\": \"reference\", \"ref_object_name\": \"state\"}, {\"field_name\": \"waist\", \"label\": \"Waist\", \"field_type\": \"string\"}]}",
+    "prompt_length": 3608,
+    "agent_recreated": true,
+    "execution_primitives_loaded": true,
+    "agent_executed": true,
+    "ai_mappings": [
+      {
+        "column": "Employee Number",
+        "fieldName": "empno",
+        "fieldType": "string",
+        "refObjectName": null
+      },
+      {
+        "column": "First Name",
+        "fieldName": "fname",
+        "fieldType": "string",
+        "refObjectName": null
+      },
+      {
+        "column": "Last Name",
+        "fieldName": "lname",
+        "fieldType": "string",
+        "refObjectName": null
+      },
+      {
+        "column": "DOB",
+        "fieldName": "dob",
+        "fieldType": "date",
+        "refObjectName": null
+      },
+      {
+        "column": "Hire Date",
+        "fieldName": "hiredate",
+        "fieldType": "date",
+        "refObjectName": null
+      },
+      {
+        "column": "Email",
+        "fieldName": "email",
+        "fieldType": "email",
+        "refObjectName": null
+      },
+      {
+        "column": "Primary Job Title",
+        "fieldName": "emptitle",
+        "fieldType": "reference",
+        "refObjectName": "emptitle"
+      },
+      {
+        "column": "Shift",
+        "fieldName": "shift",
+        "fieldType": "reference",
+        "refObjectName": "shift"
+      }
+    ],
+    "total_mappings": 8,
+    "final_mappings": [
+      {
+        "column": "Employee Number",
+        "fieldName": "empno",
+        "fieldType": "string"
+      },
+      {
+        "column": "First Name",
+        "fieldName": "fname",
+        "fieldType": "string"
+      },
+      {
+        "column": "Last Name",
+        "fieldName": "lname",
+        "fieldType": "string"
+      },
+      {
+        "column": "DOB",
+        "fieldName": "dob",
+        "fieldType": "date"
+      },
+      {
+        "column": "Hire Date",
+        "fieldName": "hiredate",
+        "fieldType": "date"
+      },
+      {
+        "column": "Email",
+        "fieldName": "email",
+        "fieldType": "email"
+      }
+    ],
+    "final_mappings_count": 6,
+    "reference_mappings": [
+      {
+        "column": "Primary Job Title",
+        "parent_field_name": "emptitle",
+        "field_type": "reference",
+        "ref_obj_name": "emptitle"
+      },
+      {
+        "column": "Shift",
+        "parent_field_name": "shift",
+        "field_type": "reference",
+        "ref_obj_name": "shift"
+      }
+    ],
+    "reference_mappings_count": 2,
+    "unique_ref_objects": [
+      "emptitle",
+      "shift"
+    ],
+    "raw_ref_schemas": {
+      "emptitle": [
+        {
+          "fieldName": "emptitle",
+          "fieldType": "string",
+          "label": "Job Title",
+          "options": {
+            "altVarName": "",
+            "clearOnHidden": false,
+            "fieldName": "emptitle",
+            "fieldOrVar": "field",
+            "guid": "4530da26-54aa-4319-8c4b-2703e1d8e1b8",
+            "label": "Job Title",
+            "labelPosition": "",
+            "length": 50,
+            "masked": false,
+            "name": "emptitle",
+            "refreshObject": false,
+            "required": true,
+            "title": "Enter the employee&#039;s Job Title",
+            "type": "string",
+            "uri": "object/emptitle/4530da26-54aa-4319-8c4b-2703e1d8e1b8"
+          },
+          "relationalOp": "contain",
+          "visible": true
+        },
+        {
+          "fieldName": "jobtype",
+          "fieldType": "staticlist",
+          "label": "Job Type",
+          "options": {
+            "altVarName": "",
+            "clearOnHidden": false,
+            "controlType": "selector",
+            "fieldName": "jobtype",
+            "fieldOrVar": "field",
+            "goToNextRecord": false,
+            "guid": "2af04a5c-c957-4c4d-b427-b31d4777a334",
+            "hasDynamicItems": false,
+            "label": "Job Type",
+            "labelPosition": "",
+            "name": "jobtype",
+            "refreshObject": false,
+            "required": false,
+            "size": "",
+            "staticPairList": [
+              {
+                "label": "Driver",
+                "value": "driver"
+              },
+              {
+                "label": "Manager",
+                "value": "manager"
+              },
+              {
+                "label": "Technician",
+                "value": "technician"
+              },
+              {
+                "label": "Other Employee",
+                "value": "other"
+              }
+            ],
+            "title": "Select the main function of this employee.  Possible options include Driver, Technician, Manger, and Other Employee.  Depending on which option you select, the employee will be available for selection within the workorder, trips , or as a Manager of a department.",
+            "type": "staticlist",
+            "uri": "object/emptitle/2af04a5c-c957-4c4d-b427-b31d4777a334"
+          },
+          "relationalOp": "=",
+          "visible": false
+        }
+      ],
+      "shift": [
+        {
+          "fieldName": "shift",
+          "fieldType": "string",
+          "label": "Shift",
+          "options": {
+            "altVarName": "",
+            "clearOnHidden": false,
+            "fieldName": "shift",
+            "fieldOrVar": "field",
+            "guid": "1077a980-4669-489c-af53-0b16101fe72c",
+            "label": "Shift",
+            "labelPosition": "",
+            "length": 50,
+            "masked": false,
+            "name": "shift",
+            "refreshObject": false,
+            "required": true,
+            "title": "Shift",
+            "type": "string",
+            "uri": "object/shift/1077a980-4669-489c-af53-0b16101fe72c"
+          },
+          "relationalOp": "contain",
+          "visible": true
+        }
+      ]
+    },
+    "formatted_ref_schemas": {
+      "emptitle": [
+        {
+          "field_name": "emptitle",
+          "field_label": "Job Title",
+          "field_type": "string",
+          "whats_this": "Enter the employee&#039;s Job Title"
+        },
+        {
+          "field_name": "jobtype",
+          "field_label": "Job Type",
+          "field_type": "staticlist",
+          "whats_this": "Select the main function of this employee.  Possible options include Driver, Technician, Manger, and Other Employee.  Depending on which option you select, the employee will be available for selection within the workorder, trips , or as a Manager of a department."
+        }
+      ],
+      "shift": [
+        {
+          "field_name": "shift",
+          "field_label": "Shift",
+          "field_type": "string",
+          "whats_this": "Shift"
+        }
+      ]
+    },
+    "ref_schemas_count": 2,
+    "ref_obj_ai_mappings": {
+      "Primary Job Title": {
+        "column": "Primary Job Title",
+        "parent_field_name": "emptitle",
+        "field_name": "emptitle",
+        "field_type": "string",
+        "ref_object_name": "emptitle"
+      },
+      "Shift": {
+        "column": "Shift",
+        "parent_field_name": "shift",
+        "field_name": "shift",
+        "field_type": "string",
+        "ref_object_name": "shift"
+      }
+    },
+    "ref_mappings_count": 2,
+    "all_mappings_dict": {
+      "Employee Number": {
+        "column": "Employee Number",
+        "fieldName": "empno",
+        "fieldType": "string"
+      },
+      "First Name": {
+        "column": "First Name",
+        "fieldName": "fname",
+        "fieldType": "string"
+      },
+      "Last Name": {
+        "column": "Last Name",
+        "fieldName": "lname",
+        "fieldType": "string"
+      },
+      "DOB": {
+        "column": "DOB",
+        "fieldName": "dob",
+        "fieldType": "date"
+      },
+      "Hire Date": {
+        "column": "Hire Date",
+        "fieldName": "hiredate",
+        "fieldType": "date"
+      },
+      "Email": {
+        "column": "Email",
+        "fieldName": "email",
+        "fieldType": "email"
+      },
+      "Primary Job Title": {
+        "column": "Primary Job Title",
+        "fieldName": "emptitle",
+        "fieldType": "reference",
+        "refObjectName": "emptitle",
+        "lookupFieldName": "emptitle"
+      },
+      "Shift": {
+        "column": "Shift",
+        "fieldName": "shift",
+        "fieldType": "reference",
+        "refObjectName": "shift",
+        "lookupFieldName": "shift"
+      }
+    },
+    "total_mappings_count": 8,
+    "non_reference_count": 6,
+    "reference_count": 2
+  },
+  "errors": []
+}

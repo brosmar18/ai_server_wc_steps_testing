@@ -148,7 +148,20 @@ def format_reference_fields(raw_fields: List[Dict[str, Any]]) -> List[Dict[str, 
 # -------------------------------------------------------------------
 
 def integrate_reference_schemas(step5d_data: dict, result: dict) -> None:
-    reference_mappings = step5d_data["data"]["reference_mappings"]
+    """
+    Carry forward ALL Step 5d data, then add reference schema information.
+    This preserves the linear pipeline contract.
+    """
+
+    # ------------------------------------------------------------------
+    # 1. Carry forward ALL upstream data (CRITICAL)
+    # ------------------------------------------------------------------
+    result["data"] = dict(step5d_data["data"])
+
+    # ------------------------------------------------------------------
+    # 2. Extract reference mappings
+    # ------------------------------------------------------------------
+    reference_mappings = result["data"]["reference_mappings"]
     unique_ref_objects = extract_unique_reference_objects(reference_mappings)
 
     raw_ref_schemas: Dict[str, List[Dict[str, Any]]] = {}
@@ -165,16 +178,14 @@ def integrate_reference_schemas(step5d_data: dict, result: dict) -> None:
             f"for reference object '{ref_object_name}'"
         )
 
-    result["data"] = {
-        "object_name": step5d_data["data"]["object_name"],
-        "file_name": step5d_data["data"]["file_name"],
-        "file_path": step5d_data["data"]["file_path"],
-        "reference_mappings": reference_mappings,
-        "unique_ref_objects": unique_ref_objects,
-        "raw_ref_schemas": raw_ref_schemas,
-        "formatted_ref_schemas": formatted_ref_schemas,
-        "ref_schemas_count": len(formatted_ref_schemas),
-    }
+    # ------------------------------------------------------------------
+    # 3. Add new Step 6a outputs (do NOT remove existing keys)
+    # ------------------------------------------------------------------
+    result["data"]["unique_ref_objects"] = unique_ref_objects
+    result["data"]["raw_ref_schemas"] = raw_ref_schemas
+    result["data"]["formatted_ref_schemas"] = formatted_ref_schemas
+    result["data"]["ref_schemas_count"] = len(formatted_ref_schemas)
+
 
 
 # -------------------------------------------------------------------

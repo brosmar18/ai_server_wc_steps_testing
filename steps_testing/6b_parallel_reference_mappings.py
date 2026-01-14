@@ -3,7 +3,7 @@ import json
 import asyncio
 from pathlib import Path
 from datetime import datetime
-from typing import List, Dict, Tuple
+from typing import List, Dict
 
 # -------------------------------------------------------------------
 # Ensure project root is on PYTHONPATH
@@ -89,9 +89,7 @@ def build_reference_work_units(step6a_data: dict) -> List[Dict]:
 # Phase 4: Parallel AI Execution
 # -------------------------------------------------------------------
 
-async def run_parallel_reference_ai(
-    work_units: List[Dict]
-) -> None:
+async def run_parallel_reference_ai(work_units: List[Dict]) -> None:
     print("\nRunning reference mappings in parallel...")
     print(f"✓ Dispatching {len(work_units)} parallel AI calls")
 
@@ -102,7 +100,10 @@ async def run_parallel_reference_ai(
         column = unit["column"]
         fields = unit["ref_fields"]
 
-        prompt = f"Column List: [{column}],\nFields Object: {json.dumps({'fields': fields})}"
+        prompt = (
+            f"Column List: [{column}],\n"
+            f"Fields Object: {json.dumps({'fields': fields})}"
+        )
         prompts.append(prompt)
 
     with trace("Parallel Reference Object Mapping"):
@@ -117,7 +118,7 @@ async def run_parallel_reference_ai(
         print(f"✓ AI completed for column: {unit['column']}")
 
 # -------------------------------------------------------------------
-# Phase 5: Normalize AI Results (CRITICAL FIX)
+# Phase 5: Normalize AI Results (SERIALIZATION SAFE)
 # -------------------------------------------------------------------
 
 def normalize_reference_ai_results(work_units: List[Dict]) -> Dict[str, Dict]:
@@ -182,19 +183,24 @@ async def main() -> int:
         if result["errors"]:
             raise RuntimeError("Validation failed")
 
+        # ------------------------------------------------------------------
+        # 1. CARRY FORWARD ALL STEP 6a DATA (CRITICAL)
+        # ------------------------------------------------------------------
+        result["data"] = dict(step6a_data["data"])
+
+        # ------------------------------------------------------------------
+        # 2. Execute reference AI mapping
+        # ------------------------------------------------------------------
         work_units = build_reference_work_units(step6a_data)
         await run_parallel_reference_ai(work_units)
 
         ref_obj_ai_mappings = normalize_reference_ai_results(work_units)
 
-        result["data"] = {
-            "object_name": step6a_data["data"]["object_name"],
-            "file_name": step6a_data["data"]["file_name"],
-            "file_path": step6a_data["data"]["file_path"],
-            "reference_mappings": step6a_data["data"]["reference_mappings"],
-            "ref_obj_ai_mappings": ref_obj_ai_mappings,
-            "ref_mappings_count": len(ref_obj_ai_mappings),
-        }
+        # ------------------------------------------------------------------
+        # 3. Add Step 6b outputs
+        # ------------------------------------------------------------------
+        result["data"]["ref_obj_ai_mappings"] = ref_obj_ai_mappings
+        result["data"]["ref_mappings_count"] = len(ref_obj_ai_mappings)
 
         result["success"] = True
         result["timestamp"] = datetime.now().isoformat()

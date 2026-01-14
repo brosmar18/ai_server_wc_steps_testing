@@ -122,10 +122,36 @@ def validate_step_5d_result(result: dict) -> None:
 # -------------------------------------------------------------------
 
 def integrate_step_5c_data(step5c_data: dict, result: dict) -> None:
+    """
+    Carry forward ALL Step 5c data, then add separated mappings.
+    This is a strict linear pipeline step.
+    """
+
+    # ------------------------------------------------------------------
+    # 1. Carry forward ALL upstream data
+    # ------------------------------------------------------------------
     result["data"] = dict(step5c_data["data"])
 
-    ai_mappings = step5c_data["data"]["ai_mappings"]
+    # ------------------------------------------------------------------
+    # 2. Enforce required pipeline contract
+    # ------------------------------------------------------------------
+    required_keys = [
+        "columns",
+        "object_name",
+        "file_name",
+        "file_path",
+        "ai_mappings",
+    ]
 
+    for key in required_keys:
+        if key not in result["data"]:
+            raise KeyError(f"Step 5c missing required key: '{key}'")
+
+    ai_mappings = result["data"]["ai_mappings"]
+
+    # ------------------------------------------------------------------
+    # 3. Build separated mappings
+    # ------------------------------------------------------------------
     final_mappings = build_final_mappings(ai_mappings)
     reference_mappings = build_reference_mappings(ai_mappings)
 
@@ -134,6 +160,9 @@ def integrate_step_5c_data(step5c_data: dict, result: dict) -> None:
 
     result["data"]["reference_mappings"] = reference_mappings
     result["data"]["reference_mappings_count"] = len(reference_mappings)
+
+    result["data"]["total_mappings"] = len(ai_mappings)
+
 
 
 # -------------------------------------------------------------------

@@ -2,7 +2,7 @@
   "step": "Step 5d: Separate Mappings",
   "step_number": "5d",
   "success": true,
-  "timestamp": "2026-01-13T18:46:52.572249",
+  "timestamp": "2026-01-13T20:16:05.786002",
   "data": {
     "object_name": "employee",
     "file_name": "sample_employees.csv",
@@ -1485,37 +1485,37 @@
         "column": "Employee Number",
         "fieldName": "empno",
         "fieldType": "string",
-        "refObjectName": "emptitle"
+        "refObjectName": null
       },
       {
         "column": "First Name",
         "fieldName": "fname",
         "fieldType": "string",
-        "refObjectName": "emptitle"
+        "refObjectName": null
       },
       {
         "column": "Last Name",
         "fieldName": "lname",
         "fieldType": "string",
-        "refObjectName": "emptitle"
+        "refObjectName": null
       },
       {
         "column": "DOB",
         "fieldName": "dob",
         "fieldType": "date",
-        "refObjectName": "emptitle"
+        "refObjectName": null
       },
       {
         "column": "Hire Date",
         "fieldName": "hiredate",
         "fieldType": "date",
-        "refObjectName": "emptitle"
+        "refObjectName": null
       },
       {
         "column": "Email",
         "fieldName": "email",
         "fieldType": "email",
-        "refObjectName": "emptitle"
+        "refObjectName": null
       },
       {
         "column": "Primary Job Title",

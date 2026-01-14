@@ -1,32 +1,20 @@
 import sys
-import asyncio
 from pathlib import Path
 from datetime import datetime
 import json
-import os
-from typing import List, Dict
-
-from agents import Agent
-from app.schemas.mapping_agent import MappingObject
-from app.core.config import config
+from typing import List, Dict, Any
 
 
-# -------------------------------------------------------------------
-# Ensure project root is on PYTHONPATH
-# -------------------------------------------------------------------
 
-PROJECT_ROOT = Path(__file__).parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+def build_step_4_result() -> dict:
+    """
+    Build the base result object for Step 4.
 
-
-# -------------------------------------------------------------------
-# Result Builder
-# -------------------------------------------------------------------
-
-def build_step_5c_result() -> dict:
+    This locks the Step 4 output contract.
+    """
     return {
-        "step": "Step 5c: Run AI Agent",
-        "step_number": "5c",
+        "step": "Step 4: Format CDATA Fields",
+        "step_number": 4,
         "success": False,
         "timestamp": datetime.now().isoformat(),
         "data": {},
@@ -34,164 +22,136 @@ def build_step_5c_result() -> dict:
     }
 
 
-# -------------------------------------------------------------------
-# Load & Validate Step 5b
-# -------------------------------------------------------------------
+def load_step_3_results(step_3_file: Path) -> dict:
+    print("\nLoading Step 3 results...")
+    print(f"Step 3 results path: {step_3_file}")
 
-def load_step_5b_results(step_5b_file: Path) -> dict:
-    print("\nLoading Step 5b results...")
-    print(f"Step 5b results path: {step_5b_file}")
+    if not step_3_file.exists():
+        raise FileNotFoundError(f"Step 3 results not found: {step_3_file}")
 
-    if not step_5b_file.exists():
-        raise FileNotFoundError(f"Step 5b results not found: {step_5b_file}")
-
-    with open(step_5b_file, "r", encoding="utf-8") as f:
+    with open(step_3_file, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    print("Step 5b results loaded successfully.")
+    print("Step 3 results loaded successfully.")
     return data
 
+def validate_step_3_success(step3_data: dict, result: dict) -> None:
+    print("\nValidating Step 3 success status...")
 
-def validate_step_5b_success(step5b_data: dict, result: dict) -> None:
-    print("\nValidating Step 5b success status...")
-
-    if not step5b_data.get("success"):
-        error = "Step 5b did not complete successfully"
+    if not step3_data.get("success"):
+        error = "Step 3 did not complete successfully"
         result["errors"].append(error)
         print(f"Validation failed: {error}")
         return
 
-    print("Step 5b completed successfully.")
+    print("Step 3 completed successfully.")
 
 
-# -------------------------------------------------------------------
-# ORIGINAL AI AGENT CREATION (verbatim logic)
-# -------------------------------------------------------------------
 
-def create_mapping_agent() -> Agent:
-    """
-    Function to create AI mapping agent.
-    """
-    try:
-        print("\nCreating AI mapping agent...")
+def format_fields(raw_fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    formatted = []
 
-        os.environ["OPENAI_API_KEY"] = config.OPENAI_API_KEY
+    for raw in raw_fields:
+        field_name = raw.get("fieldName")
+        if not field_name:
+            continue
 
-        agent = Agent(
-            name="mapping_agent",
-            instructions="""
-                You are an expert at mapping CSV column names to database field definitions.
+        field_type = str(raw.get("fieldType", "")).lower()
+        label = raw.get("label", field_name)
 
-                The user will provide:
-                1) A list of column names from a CSV file
-                2) A fields object containing field definitions
+        formatted_field = {
+            "field_name": field_name,
+            "label": label,
+            "field_type": field_type,
+        }
 
-                Your job is to map each column to its corresponding fieldName using the fieldName, 
-                field label, fieldType, and whats_this (help text) values to support your reasoning.
+        if field_type == "reference":
+            options = raw.get("options", {})
+            ref_objects = options.get("refObjects")
 
-                You will also note the fieldType value for the field that you mapped to a column.
-                If the field is a reference field, you should include the refObjectName when provided.
+            if ref_objects and isinstance(ref_objects, list):
+                formatted_field["ref_object_name"] = ref_objects[0].get("name")
+            else:
+                formatted_field["ref_object_name"] = "UNKNOWN_REFERENCE"
 
-                CRITICAL: Return ONLY valid JSON with this exact structure:
+        formatted.append(formatted_field)
 
-                {
-                  "mappings": [
-                    {
-                      "column": "<column name from the CSV>",
-                      "fieldName": "<matching fieldName>",
-                      "fieldType": "<fieldType>",
-                      "refObjectName": "<only when fieldType == reference>"
-                    }
-                  ]
-                }
-
-                Rules:
-                - Map ALL columns
-                - Use exact field names
-                - Do not include null refObjectName
-                - Do not include explanation text
-            """,
-            output_type=MappingObject,
-        )
-
-        print("✓ AI mapping agent created successfully")
-        return agent
-
-    except Exception as exc:
-        raise RuntimeError(f"Failed to create mapping agent: {exc}") from exc
+    return formatted
 
 
-# -------------------------------------------------------------------
-# Save Results
-# -------------------------------------------------------------------
 
-def save_results(result: dict, output_file: Path) -> None:
-    print("\nSaving Step 5c results...")
+def integrate_step_4_data(
+    step3_data: dict,
+    formatted_fields: List[Dict[str, Any]],
+    result: dict,
+) -> None:
+    
+    result["data"] = {
+        "object_name": step3_data["data"]["object_name"],
+        "file_name": step3_data["data"]["file_name"],
+        "file_path": step3_data["data"]["file_path"],
+        "columns": step3_data["data"]["columns"],
+        "raw_fields": step3_data["data"]["raw_fields"],
+        "formatted_fields": formatted_fields,
+    }
+
+    print("\nIntegrated Step 4 data:")
+    print(f"  Object Name: {result['data']['object_name']}")
+    print(f"  File Name: {result['data']['file_name']}")
+    print(f"  Formatted Fields: {len(formatted_fields)}")
+
+def finalize_step_success(result: dict) -> None:
+    formatted_fields = result["data"].get("formatted_fields", [])
+    result["success"] = not result["errors"] and len(formatted_fields) > 0
+
+
+def save_result_to_json(result: dict, output_file: Path) -> None:
+    print("\nSaving Step 4 results...")
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
 
-    print(f"Results saved to: {output_file}")
+    print(f"Result saved to: {output_file}")
     print(f"File size: {output_file.stat().st_size} bytes")
 
 
-# -------------------------------------------------------------------
-# Async Main
-# -------------------------------------------------------------------
 
-async def main() -> int:
+def main() -> int:
     print("=" * 80)
-    print("TESTING STEP 5c: RUN AI AGENT")
-    print("PHASE 4: AGENT RECREATION (ORIGINAL LOGIC)")
+    print("TESTING STEP 4: FORMAT CDATA FIELDS")
+    print("PHASE 8: FINALIZATION")
     print("=" * 80)
 
     project_root = Path(__file__).parent.parent
-    step_5b_results = project_root / "test_results" / "step_5b_prompt.json"
-    step_5c_output = project_root / "test_results" / "step_5c_agent_execution.json"
+    step_3_results = project_root / "test_results" / "step_3_cdata_schema.json"
+    output_file = project_root / "test_results" / "step_4_formatted_fields.json"
 
-    result = build_step_5c_result()
+    result = build_step_4_result()
 
     try:
-        step5b_data = load_step_5b_results(step_5b_results)
-        validate_step_5b_success(step5b_data, result)
+        step3_data = load_step_3_results(step_3_results)
+        validate_step_3_success(step3_data, result)
 
         if not result["errors"]:
-            agent = create_mapping_agent()
-
-            print(f"  Agent name: {agent.name}")
-            print(f"  Instructions length: {len(agent.instructions)} characters")
-
-            result["data"] = {
-                "object_name": step5b_data["data"]["object_name"],
-                "file_name": step5b_data["data"]["file_name"],
-                "file_path": step5b_data["data"]["file_path"],
-                "columns": step5b_data["data"]["columns"],
-                "raw_fields": step5b_data["data"]["raw_fields"],
-                "formatted_fields": step5b_data["data"]["formatted_fields"],
-                "agent_created": True,
-                "agent_name": agent.name,
-                "agent_instructions_length": len(agent.instructions),
-                "prompt": step5b_data["data"]["prompt"],
-                "prompt_length": step5b_data["data"]["prompt_length"],
-                "ai_mappings": [],
-                "total_mappings": 0,
-            }
-
-        save_results(result, step_5c_output)
+            raw_fields = step3_data["data"]["raw_fields"]
+            formatted_fields = format_fields(raw_fields)
+            integrate_step_4_data(step3_data, formatted_fields, result)
 
     except Exception as exc:
         result["errors"].append(str(exc))
-        save_results(result, step_5c_output)
         print(f"Error: {exc}")
 
-    print("\nFinal Step 5c result (Phase 4):")
-    print(f"  Success: {result['success']}")
-    print(f"  Agent Created: {result['data'].get('agent_created', False)}")
-    print(f"  Errors: {result['errors']}")
+    finalize_step_success(result)
+    save_result_to_json(result, output_file)
 
-    return 0
+    print("\nFinal Step 4 result:")
+    print(f"  Success: {result['success']}")
+    print(f"  Errors: {result['errors']}")
+    print(f"  Formatted Fields: {len(result['data'].get('formatted_fields', []))}")
+
+    return 0 if result["success"] else 1
 
 
 if __name__ == "__main__":
-    sys.exit(asyncio.run(main()))
+    sys.exit(main())

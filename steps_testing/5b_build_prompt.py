@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 import json
+from typing import List, Dict, Any
 
 
 # -------------------------------------------------------------------
@@ -61,20 +62,33 @@ def validate_step_5a_success(step5a_data: dict, result: dict) -> None:
 
 
 # -------------------------------------------------------------------
-# Phase 3: Prompt Construction
+# Local Prompt Builder (Inline)
 # -------------------------------------------------------------------
 
-def build_ai_prompt(columns, formatted_fields) -> str:
+def build_prompt(columns: List[str], fields: List[Dict[str, Any]]) -> str:
     """
-    Build the AI mapping prompt using shared logic.
+    Build the AI mapping prompt.
     """
-    from app.services.mapping.ai_agent import build_prompt
+    payload = {"fields": fields}
+    fields_json = json.dumps(payload, ensure_ascii=False)
 
-    print("\nBuilding prompt for AI agent...")
-    prompt = build_prompt(columns, formatted_fields)
-    print("Prompt built successfully.")
+    return f"Column List: {columns},\nFields Object: {fields_json}"
 
-    return prompt
+
+# -------------------------------------------------------------------
+# Persistence
+# -------------------------------------------------------------------
+
+def save_results(result: dict, output_file: Path) -> None:
+    print("\nSaving Step 5b results...")
+
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2)
+
+    print(f"Results saved to: {output_file}")
+
 
 # -------------------------------------------------------------------
 # Main
@@ -83,11 +97,12 @@ def build_ai_prompt(columns, formatted_fields) -> str:
 def main() -> int:
     print("=" * 80)
     print("TESTING STEP 5b: BUILD PROMPT FOR AI AGENT")
-    print("PHASE 1: RESULT CONTRACT + STEP 5a LOAD")
+    print("PHASE 5: PERSIST PROMPT RESULT")
     print("=" * 80)
 
     project_root = Path(__file__).parent.parent
     step_5a_results = project_root / "test_results" / "step_5a_ai_agent.json"
+    output_file = project_root / "test_results" / "step_5b_prompt.json"
 
     result = build_step_5b_result()
 
@@ -96,28 +111,38 @@ def main() -> int:
         validate_step_5a_success(step5a_data, result)
 
         if not result["errors"]:
-            print("\nExtracting required data from Step 5a...")
+            columns = step5a_data["data"]["columns"]
+            formatted_fields = step5a_data["data"]["formatted_fields"]
+
+            prompt = build_prompt(columns, formatted_fields)
 
             result["data"] = {
                 "object_name": step5a_data["data"]["object_name"],
                 "file_name": step5a_data["data"]["file_name"],
                 "file_path": step5a_data["data"]["file_path"],
-                "columns": step5a_data["data"]["columns"],
-                "formatted_fields": step5a_data["data"]["formatted_fields"],
+                "columns": columns,
+                "raw_fields": step5a_data["data"]["raw_fields"],
+                "formatted_fields": formatted_fields,
+                "agent_created": step5a_data["data"]["agent_created"],
+                "agent_name": step5a_data["data"]["agent_name"],
+                "agent_instructions_length": step5a_data["data"]["agent_instructions_length"],
+                "prompt": prompt,
+                "prompt_length": len(prompt),
             }
 
-            print("Data extraction complete.")
-            print(f"  Columns: {len(result['data']['columns'])}")
-            print(f"  Formatted fields: {len(result['data']['formatted_fields'])}")
+            result["success"] = True
+            result["timestamp"] = datetime.now().isoformat()
+
+            save_results(result, output_file)
 
     except Exception as exc:
         result["errors"].append(str(exc))
         print(f"Error: {exc}")
 
-    print("\nCurrent Step 5b result state:")
-    print(f"  Data keys: {list(result['data'].keys())}")
-    print(f"  Errors: {result['errors']}")
+    print("\nFinal Step 5b result:")
     print(f"  Success: {result['success']}")
+    print(f"  Prompt Length: {result['data'].get('prompt_length')}")
+    print(f"  Errors: {result['errors']}")
 
     return 0
 

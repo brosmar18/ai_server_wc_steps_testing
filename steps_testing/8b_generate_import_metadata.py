@@ -3,14 +3,12 @@ from pathlib import Path
 from datetime import datetime
 import json
 
-
 # -------------------------------------------------------------------
 # Ensure project root is on PYTHONPATH
 # -------------------------------------------------------------------
 
 PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
-
 
 # -------------------------------------------------------------------
 # Result Builder
@@ -25,7 +23,6 @@ def build_step_8b_result() -> dict:
         "data": {},
         "errors": [],
     }
-
 
 # -------------------------------------------------------------------
 # Load & Validate Step 8a
@@ -52,9 +49,8 @@ def validate_step_8a_success(step8a_data: dict, result: dict) -> None:
 
     print("Step 8a completed successfully.")
 
-
 # -------------------------------------------------------------------
-# Core Logic (Inline Metadata Generator)
+# Core Logic (Metadata Generator)
 # -------------------------------------------------------------------
 
 def generate_import_metadata(
@@ -77,7 +73,6 @@ def generate_import_metadata(
         ),
     }
 
-
 # -------------------------------------------------------------------
 # Finalization
 # -------------------------------------------------------------------
@@ -97,7 +92,6 @@ def save_result_to_json(result: dict, output_file: Path) -> None:
     print(f"Saved: {output_file}")
     print(f"File size: {output_file.stat().st_size} bytes")
 
-
 # -------------------------------------------------------------------
 # Main
 # -------------------------------------------------------------------
@@ -115,14 +109,29 @@ def main() -> int:
     result = build_step_8b_result()
 
     try:
-        step8a_data = load_step_8a_results(step_8a_results)
-        validate_step_8a_success(step8a_data, result)
+        # ------------------------------------------------------------
+        # Load Step 8a ONLY (linear pipeline)
+        # ------------------------------------------------------------
+        step8a = load_step_8a_results(step_8a_results)
+        validate_step_8a_success(step8a, result)
 
         if not result["errors"]:
-            object_name = step8a_data["data"]["object_name"]
-            file_name = step8a_data["data"]["file_name"]
-            field_overrides = step8a_data["data"]["field_overrides"]
+            # Carry forward ALL Step 8a data
+            result["data"] = dict(step8a["data"])
+
+            object_name = result["data"]["object_name"]
+            file_name = result["data"]["file_name"]
+            columns = result["data"]["columns"]
+            field_overrides = result["data"]["field_overrides"]
+
             mapping_count = len(field_overrides)
+
+            # HARD SAFETY CHECK
+            if mapping_count != len(columns):
+                raise ValueError(
+                    f"Import metadata mismatch: "
+                    f"{mapping_count} field overrides for {len(columns)} columns"
+                )
 
             metadata = generate_import_metadata(
                 object_name=object_name,
@@ -130,21 +139,13 @@ def main() -> int:
                 mapping_count=mapping_count,
             )
 
-            result["data"] = {
-                "object_name": object_name,
-                "file_name": file_name,
-                "file_path": step8a_data["data"]["file_path"],
-                "columns": step8a_data["data"]["columns"],
-                "field_overrides": field_overrides,
-                "field_overrides_count": mapping_count,
-                "simple_fields_count": step8a_data["data"]["simple_fields_count"],
-                "reference_fields_count": step8a_data["data"]["reference_fields_count"],
-                # New from Step 8b
+            # Append metadata only
+            result["data"].update({
                 "import_metadata": metadata,
                 "import_name": metadata["importName"],
                 "import_description": metadata["importDescription"],
                 "import_instructions": metadata["importInstructions"],
-            }
+            })
 
     except Exception as exc:
         result["errors"].append(str(exc))

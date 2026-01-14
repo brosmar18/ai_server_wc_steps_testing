@@ -104,19 +104,14 @@ def integrate_step_8c_data(step8b_data: dict, result: dict) -> None:
         import_metadata=import_metadata,
     )
 
-    # Carry forward ONLY what is still relevant at execution time
-    result["data"] = {
-        "object_name": data["object_name"],
-        "file_name": data["file_name"],
-        "file_path": data["file_path"],
-        "columns": columns,
-        "field_overrides": field_overrides,
-        "field_overrides_count": len(field_overrides),
-        "import_metadata": import_metadata,
-        # Final execution payload
+    # Carry forward ALL data from Step 8b (maintains linear pipeline)
+    result["data"] = dict(step8b_data["data"])
+
+    # Add Step 8c outputs
+    result["data"].update({
         "import_params": import_params,
         "params_keys": list(import_params["params"].keys()),
-    }
+    })
 
 # -------------------------------------------------------------------
 # Finalization

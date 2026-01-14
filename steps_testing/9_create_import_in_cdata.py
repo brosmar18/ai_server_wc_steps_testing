@@ -193,16 +193,16 @@ async def main() -> int:
                 "data": None,
             }
 
-        result["data"] = {
-            "object_name": object_name,
-            "file_name": file_name,
-            "file_path": data["file_path"],
-            "import_params": import_params,
+        # Carry forward ALL data from step 8c (maintains linear pipeline)
+        result["data"] = dict(step8c_data["data"])
+
+        # Add Step 9 outputs
+        result["data"].update({
             "import_result": import_result,
             "cdata_import_created": import_result.get("success", False),
             "cdata_status_code": import_result.get("status_code"),
             "cdata_url": import_result.get("url"),
-        }
+        })
 
         if not import_result.get("success"):
             result["errors"].append(import_result.get("error"))

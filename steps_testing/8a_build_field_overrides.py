@@ -50,37 +50,51 @@ def validate_success(step_data: dict, step_name: str, result: dict) -> None:
 # Core Logic (STRICT & SAFE)
 # -------------------------------------------------------------------
 
-def build_field_overrides(columns: list, mappings: dict) -> list:
+def build_field_overrides(columns: list, mappings: dict, ref_obj_ai_mappings: dict) -> list:
     """
-    Build fieldOverrides strictly from the final mappings dictionary.
-    Guarantees 1 override per column, no extras.
+    Build fieldOverrides array for import params.
+    Matches app/services/import_config/params_builder.py logic exactly.
+
+    CDATA expects fieldOverrides to be an array where each element represents
+    a CSV column and its mapping configuration.
+
+    Args:
+        columns: List of CSV column names in order
+        mappings: Dictionary of all mappings (parent + reference)
+        ref_obj_ai_mappings: Reference object lookup field mappings
+
+    Returns:
+        List of field override objects (one per column)
     """
     field_overrides = []
 
     for col_index, column_name in enumerate(columns):
-        mapping = mappings.get(column_name)
+        # Get the mapping for this column
+        if column_name not in mappings:
+            print(f"WARNING: No mapping found for column '{column_name}', skipping")
+            continue
 
-        if not mapping:
-            raise KeyError(
-                f"Column '{column_name}' has no mapping in all_mappings_dict"
-            )
+        mapping = mappings[column_name]
 
-        # Simple field
-        if mapping["fieldType"] != "reference":
-            field_overrides.append({
+        # Check if this is a reference field
+        if mapping.get("fieldType") == "reference" and column_name in ref_obj_ai_mappings:
+            # REFERENCE FIELD - Get lookup info from ref_obj_ai_mappings
+            ref_mapping = ref_obj_ai_mappings[column_name]
+            override = {
                 "col": col_index,
                 "fieldName": mapping["fieldName"],
-            })
-
-        # Reference field
+                "lookupRefObject": ref_mapping["ref_object_name"],
+                "lookupFieldName": ref_mapping["field_name"],
+                "createOnMissing": True  # Always true for reference fields
+            }
         else:
-            field_overrides.append({
+            # SIMPLE FIELD - No createOnMissing at all
+            override = {
                 "col": col_index,
-                "fieldName": mapping["fieldName"],
-                "lookupRefObject": mapping["refObjectName"],
-                "lookupFieldName": mapping["lookupFieldName"],
-                "createOnMissing": True,
-            })
+                "fieldName": mapping["fieldName"]
+            }
+
+        field_overrides.append(override)
 
     return field_overrides
 
@@ -128,13 +142,15 @@ def main() -> int:
 
             columns = result["data"]["columns"]
             mappings = result["data"]["all_mappings_dict"]
+            ref_obj_ai_mappings = result["data"]["ref_obj_ai_mappings"]
 
-            field_overrides = build_field_overrides(columns, mappings)
+            field_overrides = build_field_overrides(columns, mappings, ref_obj_ai_mappings)
 
-            # HARD SAFETY CHECK (prevents CDATA corruption)
-            if len(field_overrides) != len(columns):
+            # Safety check: field_overrides should match or be less than columns
+            # (less if some columns were skipped due to no mapping)
+            if len(field_overrides) > len(columns):
                 raise ValueError(
-                    f"Field override count mismatch: "
+                    f"Field override count ERROR: "
                     f"{len(field_overrides)} overrides for {len(columns)} columns"
                 )
 

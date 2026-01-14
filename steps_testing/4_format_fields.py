@@ -63,6 +63,7 @@ def format_fields(raw_fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "field_name": field_name,
             "label": label,
             "field_type": field_type,
+            "whats_this": raw.get("options", {}).get("title")
         }
 
         if field_type == "reference":

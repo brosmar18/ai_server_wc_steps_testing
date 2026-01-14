@@ -64,11 +64,6 @@ def main():
     step9_results_file = test_results_dir / "step_9_cdata_import.json"
     step10_results_file = test_results_dir / "step_10_final_response.json"
 
-    # We also need data from earlier steps for formatted_fields and ref_obj_fields
-    step5d_results_file = test_results_dir / "step_5d_mappings_separated.json"
-    step6b_results_file = test_results_dir / "step_6b_reference_mappings.json"
-    step7_results_file = test_results_dir / "step_7_final_mappings.json"
-
     # Ensure test_results directory exists
     test_results_dir.mkdir(exist_ok=True)
 
@@ -105,47 +100,23 @@ def main():
         logger.info("Step 9 results loaded successfully")
 
         # ============================================================
-        # Load Additional Data from Earlier Steps
+        # Extract All Required Data from Step 9
         # ============================================================
-        print("Loading additional data from earlier steps...")
-        logger.info("Loading additional data from earlier steps")
+        print("\nExtracting all data for final response from Step 9...")
+        logger.info("Extracting all data for final response from Step 9")
 
-        # Load Step 5d for formatted_fields
-        with open(step5d_results_file, 'r') as f:
-            step5d_data = json.load(f)
+        # All data should be available from Step 9 due to linear pipeline
+        data = step9_data['data']
 
-        # Load Step 6b for ref_obj_fields
-        with open(step6b_results_file, 'r') as f:
-            step6b_data = json.load(f)
-
-        # Load Step 7 for all_mappings_dict
-        with open(step7_results_file, 'r') as f:
-            step7_data = json.load(f)
-
-        print(f"✓ Loaded data from Steps 5d, 6b and 7")
-        logger.info("Loaded data from Steps 5d, 6b and 7")
-
-        # ============================================================
-        # Extract All Required Data
-        # ============================================================
-        print("\nExtracting all data for final response...")
-        logger.info("Extracting all data for final response")
-
-        object_name = step9_data['data']['object_name']
-        file_name = step9_data['data']['file_name']
-        columns = step9_data['data']['columns']
-        import_params = step9_data['data']['import_params']
-        import_result = step9_data['data']['import_result']
-
-        # From Step 5d
-        formatted_fields = step5d_data['data']['formatted_fields']
-
-        # From Step 6b
-        ref_obj_fields = step6b_data['data']['ref_schemas']
-        ref_obj_ai_mappings = step6b_data['data']['ref_obj_ai_mappings']
-
-        # From Step 7
-        all_mappings_dict = step7_data['data']['all_mappings_dict']
+        object_name = data['object_name']
+        file_name = data['file_name']
+        columns = data['columns']
+        formatted_fields = data['formatted_fields']
+        all_mappings_dict = data['all_mappings_dict']
+        ref_obj_fields = data.get('formatted_ref_schemas', {})
+        ref_obj_ai_mappings = data['ref_obj_ai_mappings']
+        import_params = data['import_params']
+        import_result = data['import_result']
 
         print(f"✓ Object: {object_name}")
         print(f"✓ File: {file_name}")

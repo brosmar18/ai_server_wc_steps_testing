@@ -1,0 +1,10 @@
+{
+  "step": "Step 6b: Run Parallel Reference Mappings",
+  "step_number": "6b",
+  "success": false,
+  "timestamp": "2026-01-13T19:00:10.465818",
+  "data": {},
+  "errors": [
+    "'columns'"
+  ]
+}

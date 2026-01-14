@@ -2,53 +2,11 @@
   "step": "Step 6a: Fetch Reference Object Schemas",
   "step_number": "6a",
   "success": true,
-  "timestamp": "2026-01-13T18:49:36.092493",
+  "timestamp": "2026-01-13T18:57:45.817532",
   "data": {
     "object_name": "employee",
     "file_name": "sample_employees.csv",
     "file_path": "C:\\Users\\bgonzalez\\Documents\\Development\\python\\dev\\ai_server_wc _steps_testing\\uploads\\sample_employees.csv",
-    "columns": [
-      "Employee Number",
-      "First Name",
-      "Last Name",
-      "DOB",
-      "Hire Date",
-      "Email",
-      "Primary Job Title",
-      "Shift"
-    ],
-    "final_mappings": [
-      {
-        "column": "Employee Number",
-        "fieldName": "empno",
-        "fieldType": "string"
-      },
-      {
-        "column": "First Name",
-        "fieldName": "fname",
-        "fieldType": "string"
-      },
-      {
-        "column": "Last Name",
-        "fieldName": "lname",
-        "fieldType": "string"
-      },
-      {
-        "column": "DOB",
-        "fieldName": "dob",
-        "fieldType": "date"
-      },
-      {
-        "column": "Hire Date",
-        "fieldName": "hiredate",
-        "fieldType": "date"
-      },
-      {
-        "column": "Email",
-        "fieldName": "email",
-        "fieldType": "email"
-      }
-    ],
     "reference_mappings": [
       {
         "column": "Primary Job Title",
@@ -62,7 +20,134 @@
         "field_type": "reference",
         "ref_obj_name": "shift"
       }
-    ]
+    ],
+    "unique_ref_objects": [
+      "emptitle",
+      "shift"
+    ],
+    "raw_ref_schemas": {
+      "emptitle": [
+        {
+          "fieldName": "emptitle",
+          "fieldType": "string",
+          "label": "Job Title",
+          "options": {
+            "altVarName": "",
+            "clearOnHidden": false,
+            "fieldName": "emptitle",
+            "fieldOrVar": "field",
+            "guid": "4530da26-54aa-4319-8c4b-2703e1d8e1b8",
+            "label": "Job Title",
+            "labelPosition": "",
+            "length": 50,
+            "masked": false,
+            "name": "emptitle",
+            "refreshObject": false,
+            "required": true,
+            "title": "Enter the employee&#039;s Job Title",
+            "type": "string",
+            "uri": "object/emptitle/4530da26-54aa-4319-8c4b-2703e1d8e1b8"
+          },
+          "relationalOp": "contain",
+          "visible": true
+        },
+        {
+          "fieldName": "jobtype",
+          "fieldType": "staticlist",
+          "label": "Job Type",
+          "options": {
+            "altVarName": "",
+            "clearOnHidden": false,
+            "controlType": "selector",
+            "fieldName": "jobtype",
+            "fieldOrVar": "field",
+            "goToNextRecord": false,
+            "guid": "2af04a5c-c957-4c4d-b427-b31d4777a334",
+            "hasDynamicItems": false,
+            "label": "Job Type",
+            "labelPosition": "",
+            "name": "jobtype",
+            "refreshObject": false,
+            "required": false,
+            "size": "",
+            "staticPairList": [
+              {
+                "label": "Driver",
+                "value": "driver"
+              },
+              {
+                "label": "Manager",
+                "value": "manager"
+              },
+              {
+                "label": "Technician",
+                "value": "technician"
+              },
+              {
+                "label": "Other Employee",
+                "value": "other"
+              }
+            ],
+            "title": "Select the main function of this employee.  Possible options include Driver, Technician, Manger, and Other Employee.  Depending on which option you select, the employee will be available for selection within the workorder, trips , or as a Manager of a department.",
+            "type": "staticlist",
+            "uri": "object/emptitle/2af04a5c-c957-4c4d-b427-b31d4777a334"
+          },
+          "relationalOp": "=",
+          "visible": false
+        }
+      ],
+      "shift": [
+        {
+          "fieldName": "shift",
+          "fieldType": "string",
+          "label": "Shift",
+          "options": {
+            "altVarName": "",
+            "clearOnHidden": false,
+            "fieldName": "shift",
+            "fieldOrVar": "field",
+            "guid": "1077a980-4669-489c-af53-0b16101fe72c",
+            "label": "Shift",
+            "labelPosition": "",
+            "length": 50,
+            "masked": false,
+            "name": "shift",
+            "refreshObject": false,
+            "required": true,
+            "title": "Shift",
+            "type": "string",
+            "uri": "object/shift/1077a980-4669-489c-af53-0b16101fe72c"
+          },
+          "relationalOp": "contain",
+          "visible": true
+        }
+      ]
+    },
+    "formatted_ref_schemas": {
+      "emptitle": [
+        {
+          "field_name": "emptitle",
+          "field_label": "Job Title",
+          "field_type": "string",
+          "whats_this": "Enter the employee&#039;s Job Title"
+        },
+        {
+          "field_name": "jobtype",
+          "field_label": "Job Type",
+          "field_type": "staticlist",
+          "whats_this": "Select the main function of this employee.  Possible options include Driver, Technician, Manger, and Other Employee.  Depending on which option you select, the employee will be available for selection within the workorder, trips , or as a Manager of a department."
+        }
+      ],
+      "shift": [
+        {
+          "field_name": "shift",
+          "field_label": "Shift",
+          "field_type": "string",
+          "whats_this": "Shift"
+        }
+      ]
+    },
+    "ref_schemas_count": 2
   },
   "errors": []
 }

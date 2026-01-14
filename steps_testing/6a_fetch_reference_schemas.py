@@ -2,6 +2,9 @@ import sys
 from pathlib import Path
 from datetime import datetime
 import json
+from typing import Dict, List, Any
+
+import httpx
 
 
 # -------------------------------------------------------------------
@@ -12,14 +15,14 @@ PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 
+from app.core.config import config
+
+
 # -------------------------------------------------------------------
 # Result Builder
 # -------------------------------------------------------------------
 
 def build_step_6a_result() -> dict:
-    """
-    Build the base result object for Step 6a.
-    """
     return {
         "step": "Step 6a: Fetch Reference Object Schemas",
         "step_number": "6a",
@@ -61,20 +64,116 @@ def validate_step_5d_success(step5d_data: dict, result: dict) -> None:
 
 
 # -------------------------------------------------------------------
-# Integration (Phase 1)
+# Reference Object Extraction
 # -------------------------------------------------------------------
 
-def integrate_step_5d_data(step5d_data: dict, result: dict) -> None:
+def extract_unique_reference_objects(reference_mappings: list) -> list:
+    unique_objects = sorted(
+        {rm["ref_obj_name"] for rm in reference_mappings if rm.get("ref_obj_name")}
+    )
+
+    print(f"\nUnique reference objects detected: {len(unique_objects)}")
+    for obj in unique_objects:
+        print(f"  - {obj}")
+
+    return unique_objects
+
+
+# -------------------------------------------------------------------
+# Local CDATA Client
+# -------------------------------------------------------------------
+
+class CDataAPIError(Exception):
+    pass
+
+
+def fetch_reference_schema(object_name: str) -> List[Dict[str, Any]]:
+    if not object_name or not object_name.strip():
+        raise ValueError("Reference object name cannot be empty")
+
+    object_name = object_name.strip()
+
+    url = f"{config.CDATA_API_BASE}/rest/web/advancedFilter/simpleFilters"
+    params = {"object": object_name}
+
+    print(f"\nFetching CDATA schema for reference object: {object_name}")
+
+    response = httpx.get(
+        url=url,
+        params=params,
+        auth=config.CDATA_AUTH,
+        timeout=30.0,
+    )
+
+    response.raise_for_status()
+    data = response.json()
+
+    if not isinstance(data, list):
+        raise CDataAPIError("CDATA response is not a list")
+
+    print(f"✓ Fetched {len(data)} fields for '{object_name}'")
+    return data
+
+
+# -------------------------------------------------------------------
+# Formatting (NEW in Phase 5)
+# -------------------------------------------------------------------
+
+def format_reference_fields(raw_fields: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
-    Carry forward Step 5d data unchanged.
+    Normalize CDATA reference object fields.
     """
+    formatted = []
+
+    for raw in raw_fields:
+        field_name = raw.get("fieldName")
+        if not field_name:
+            continue
+
+        options = raw.get("options", {})
+
+        formatted.append({
+            "field_name": field_name,
+            "field_label": raw.get("label", field_name),
+            "field_type": str(raw.get("fieldType", "")).lower(),
+            "whats_this": options.get("title"),
+        })
+
+    return formatted
+
+
+
+# -------------------------------------------------------------------
+# Integration
+# -------------------------------------------------------------------
+
+def integrate_reference_schemas(step5d_data: dict, result: dict) -> None:
+    reference_mappings = step5d_data["data"]["reference_mappings"]
+    unique_ref_objects = extract_unique_reference_objects(reference_mappings)
+
+    raw_ref_schemas: Dict[str, List[Dict[str, Any]]] = {}
+    formatted_ref_schemas: Dict[str, List[Dict[str, Any]]] = {}
+
+    for ref_object_name in unique_ref_objects:
+        raw_schema = fetch_reference_schema(ref_object_name)
+        raw_ref_schemas[ref_object_name] = raw_schema
+
+        formatted_ref_schemas[ref_object_name] = format_reference_fields(raw_schema)
+
+        print(
+            f"✓ Normalized {len(formatted_ref_schemas[ref_object_name])} fields "
+            f"for reference object '{ref_object_name}'"
+        )
+
     result["data"] = {
         "object_name": step5d_data["data"]["object_name"],
         "file_name": step5d_data["data"]["file_name"],
         "file_path": step5d_data["data"]["file_path"],
-        "columns": step5d_data["data"]["columns"],
-        "final_mappings": step5d_data["data"]["final_mappings"],
-        "reference_mappings": step5d_data["data"]["reference_mappings"],
+        "reference_mappings": reference_mappings,
+        "unique_ref_objects": unique_ref_objects,
+        "raw_ref_schemas": raw_ref_schemas,
+        "formatted_ref_schemas": formatted_ref_schemas,
+        "ref_schemas_count": len(formatted_ref_schemas),
     }
 
 
@@ -87,7 +186,7 @@ def finalize_step_6a_success(result: dict) -> None:
 
 
 def save_results(result: dict, output_file: Path) -> None:
-    print("\nSaving Step 6a results (Phase 1)...")
+    print("\nSaving Step 6a results (Phase 5)...")
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -105,7 +204,7 @@ def save_results(result: dict, output_file: Path) -> None:
 def main() -> int:
     print("=" * 80)
     print("TESTING STEP 6a: FETCH REFERENCE OBJECT SCHEMAS")
-    print("PHASE 1: LOAD & VALIDATE INPUT")
+    print("PHASE 5: FORMAT REFERENCE SCHEMAS")
     print("=" * 80)
 
     project_root = Path(__file__).parent.parent
@@ -119,7 +218,7 @@ def main() -> int:
         validate_step_5d_success(step5d_data, result)
 
         if not result["errors"]:
-            integrate_step_5d_data(step5d_data, result)
+            integrate_reference_schemas(step5d_data, result)
 
     except Exception as exc:
         result["errors"].append(str(exc))
@@ -128,9 +227,10 @@ def main() -> int:
     finalize_step_6a_success(result)
     save_results(result, output_file)
 
-    print("\nFinal Step 6a result (Phase 1):")
+    print("\nFinal Step 6a result (Phase 5):")
     print(f"  Success: {result['success']}")
-    print(f"  Reference Mappings: {len(result['data'].get('reference_mappings', []))}")
+    print(f"  Reference Objects: {len(result['data'].get('unique_ref_objects', []))}")
+    print(f"  Schemas Formatted: {result['data'].get('ref_schemas_count')}")
     print(f"  Errors: {result['errors']}")
 
     return 0 if result["success"] else 1

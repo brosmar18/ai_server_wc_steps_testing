@@ -57,23 +57,64 @@ def validate_step_8b_success(step8b_data: dict, result: dict) -> None:
 
 
 # -------------------------------------------------------------------
-# Integration (Phase 1: carry forward only)
+# Phase 2: Manual Import Params Assembly
 # -------------------------------------------------------------------
 
-def integrate_step_8b_data(step8b_data: dict, result: dict) -> None:
+def build_import_params(field_overrides: list, import_metadata: dict) -> dict:
     """
-    Carry forward all required data unchanged.
-    NO combination logic yet.
+    Manually assemble the CDATA import params structure.
+
+    Mirrors:
+        {
+          "params": {
+            "fieldOverrides": [...],
+            **metadata
+          }
+        }
     """
+    print("\nBuilding import params structure...")
+
+    params = {
+        "params": {
+            "fieldOverrides": field_overrides,
+            **import_metadata,
+        }
+    }
+
+    print("Import params structure built.")
+    print(f"  Field Overrides: {len(field_overrides)}")
+    print(f"  Metadata keys: {list(import_metadata.keys())}")
+
+    return params
+
+
+# -------------------------------------------------------------------
+# Integration
+# -------------------------------------------------------------------
+
+def integrate_step_8c_data(step8b_data: dict, result: dict) -> None:
+    field_overrides = step8b_data["data"]["field_overrides"]
+    import_metadata = step8b_data["data"]["import_metadata"]
+
+    import_params = build_import_params(
+        field_overrides=field_overrides,
+        import_metadata=import_metadata,
+    )
+
     result["data"] = {
+        # Carried forward
         "object_name": step8b_data["data"]["object_name"],
         "file_name": step8b_data["data"]["file_name"],
         "file_path": step8b_data["data"]["file_path"],
         "columns": step8b_data["data"].get("columns"),
         "all_mappings_dict": step8b_data["data"].get("all_mappings_dict"),
         "ref_obj_ai_mappings": step8b_data["data"].get("ref_obj_ai_mappings"),
-        "field_overrides": step8b_data["data"]["field_overrides"],
-        "import_metadata": step8b_data["data"]["import_metadata"],
+        "field_overrides": field_overrides,
+        "import_metadata": import_metadata,
+        # New
+        "import_params": import_params,
+        "params_keys": list(import_params["params"].keys()),
+        "field_overrides_count": len(field_overrides),
     }
 
 
@@ -104,7 +145,7 @@ def save_result_to_json(result: dict, output_file: Path) -> None:
 def main() -> int:
     print("=" * 80)
     print("TESTING STEP 8c: COMBINE INTO FINAL IMPORT PARAMS")
-    print("PHASE 1: LOAD & VALIDATE STEP 8b")
+    print("PHASE 2: MANUAL PARAMS ASSEMBLY")
     print("=" * 80)
 
     project_root = Path(__file__).parent.parent
@@ -118,7 +159,7 @@ def main() -> int:
         validate_step_8b_success(step8b_data, result)
 
         if not result["errors"]:
-            integrate_step_8b_data(step8b_data, result)
+            integrate_step_8c_data(step8b_data, result)
 
     except Exception as exc:
         result["errors"].append(str(exc))
@@ -127,10 +168,10 @@ def main() -> int:
     finalize_step_8c_success(result)
     save_result_to_json(result, output_file)
 
-    print("\nFinal Step 8c result (Phase 1):")
+    print("\nFinal Step 8c result (Phase 2):")
     print(f"  Success: {result['success']}")
-    print(f"  Field overrides: {len(result['data'].get('field_overrides', []))}")
-    print(f"  Metadata keys: {list(result['data'].get('import_metadata', {}).keys())}")
+    print(f"  Params keys: {result['data'].get('params_keys')}")
+    print(f"  Field overrides: {result['data'].get('field_overrides_count')}")
     print(f"  Errors: {result['errors']}")
 
     return 0 if result["success"] else 1
